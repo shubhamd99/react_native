@@ -1,0 +1,85 @@
+buildscript {
+    if (project == rootProject) {
+        repositories {
+            google()
+            mavenCentral()
+        }
+
+        dependencies {
+            classpath 'com.android.tools.build:gradle:7.0.4'
+            classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
+        }
+    }
+}
+
+def isNewArchitectureEnabled() {
+    return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+apply plugin: 'com.facebook.react'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+android {
+    compileSdkVersion safeExtGet('TurboSecureStorage_compileSdkVersion', 31)
+    defaultConfig {
+        minSdkVersion safeExtGet('TurboSecureStorage_minSdkVersion', 23)
+        targetSdkVersion safeExtGet('TurboSecureStorage_targetSdkVersion', 31)
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    lintOptions {
+        disable 'GradleCompatible'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets.main {
+        java {
+            if (!isNewArchitectureEnabled()) {
+                srcDirs += [
+                    "build/generated/source/codegen/java"
+                ]
+            }
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url("$rootDir/../node_modules/react-native/android")
+    }
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':ReactAndroid')
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.biometric:biometric:1.2.0-alpha03")
+}
+
+if (isNewArchitectureEnabled()) {
+    react {
+        libraryName = "turbosecurestorage"
+        codegenJavaPackageName = "com.turbosecurestorage"
+        jsRootDir = file("../src/")
+        reactRoot = rootProject.file("../node_modules/react-native/")
+        codegenDir = rootProject.file("../node_modules/react-native-codegen/")
+    }
+}
