@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.protobuf'
 
 import com.android.build.OutputFile
 
@@ -146,6 +147,25 @@ android {
 
         }
     }
+
+    protobuf {
+        protoc { artifact = 'com.google.protobuf:protoc:3.19.2' }
+        plugins {
+            grpc { artifact = 'io.grpc:protoc-gen-grpc-java:1.47.0'
+            }
+        }
+        generateProtoTasks {
+            all().each { task ->
+                task.builtins {
+                    java { option 'lite' }
+                }
+                task.plugins {
+                    grpc {
+                        option 'lite' }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -153,6 +173,12 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+
+    // GRPC Packages
+    implementation 'io.grpc:grpc-okhttp:1.50.2'
+    implementation 'io.grpc:grpc-protobuf-lite:1.50.2'
+    implementation 'io.grpc:grpc-stub:1.50.2'
+    implementation 'org.apache.tomcat:annotations-api:6.0.53'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {

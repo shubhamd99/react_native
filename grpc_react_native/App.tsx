@@ -1,40 +1,53 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+// @flow
+import React, {Component} from 'react';
+import {Alert, Button, StyleSheet, TextInput, View} from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import {Greeter} from './js/hellowworld';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+export default class App extends Component {
+  state: {name: string} = {name: ''};
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.textInputWrap}>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={name => this.setState({name})}
+            value={this.state.name}
+          />
+        </View>
+        <Button
+          title="call Greeter.sayHello"
+          onPress={() => this.onButtonPress()}
+        />
+      </View>
+    );
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-      </ScrollView>
-    </SafeAreaView>
-  );
+  async onButtonPress() {
+    try {
+      const response = await Greeter.sayHello({name: this.state.name});
+      Alert.alert('response', response.message);
+    } catch (e: any) {
+      Alert.alert('error', e.message);
+    }
+  }
 }
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    padding: 20,
+  },
+  textInputWrap: {
+    flexDirection: 'row',
+  },
+  textInput: {
+    flex: 1,
+    height: 40,
+    borderColor: 'gray',
+  },
+});
