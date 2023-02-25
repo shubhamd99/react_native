@@ -62,11 +62,18 @@ As soon as you type in one of those commands (which are react-native run-android
 
 The code that’s now running within this JavaScript VM thread will communicate with the native thread using the React Native bridge.
 
+Unlike a fully native application, a React Native app contains a Javascript bundle that needs to be loaded into memory. Then it is parsed and executed by the Javascript VM. The overall size of the Javascript code is an important factor. While that happens, the application remains in the loading state. We often describe this process as TTI - Time to Interactive. It is a time expressed in the milliseconds between when the icon gets selected from the application drawer and when it becomes fully interactive.
+
 ### JavaScript Core (Replaced with Hermes in New React Native)
 
 JavaScriptCore is a framework that allows JavaScript code to be run on mobile devices, for instance. On iOS devices, this framework is directly provided by the OS. Android devices don’t have the framework, so React Native bundles it along with the app itself. This increases the app size just a little bit, but it’ll barely matter in the end.
 
 JavaScriptCore is used for running JS code when the app is run on a device. However, if you choose to debug your app, the JS code is going to run inside Chrome. Chrome uses the V8 engine and uses WebSockets for communicating with the native code, so you’ll be able to see important info such as properly formatted logs and what network requests are being made. Just remember that there are differences between the V8 engine and JavaScriptCore — they are different environments
+
+## Tree Shaking
+
+Unfortunaltely, Metro - the default React Native bundler - currently doesn't support tree shaking.
+Tree shaking is a term commonly used within a JavaScript context to describe the removal of dead code. It relies on the import and export statements to detect if code modules are exported and imported for use between JavaScript files.
 
 ## Hermes
 
