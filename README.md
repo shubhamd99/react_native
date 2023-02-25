@@ -306,3 +306,16 @@ InteractionManager.runAfterInteractions(() => {
     someLongTask() // or animations
 });
 ```
+
+### Lottie
+GIFs can quickly add a few megabytes to our app's bundle. So what other options do we have? Lottie
+A Lottie is a JSON-based animation file format that allows you to ship animations on any platform as easily as shipping static assets. They are small files that work on any device and can scale up or down without pixelation. LottieFiles lets you create, edit, test, collaborate on and ship a Lottie in the easiest way possible.
+It was created by AirBnb to leverage lottie files which is JSON based animations exported using the plugin BodyMoving from Adobe AfterEffects.
+
+### Cons of Lottie
+For example, if we tap on a button, the state of the animation changes for the next step. Let's say we want to change the size or do other customizations, we can't do it in the editor provided by LottieFiles. Instead, we will have to import that in Adobe AE and then do the adjustments.
+
+### Rive
+
+Rive, on the other hand, is built from the ground up to make transitions and animations easy to build. Rive’s runtimes can take things a step further by allowing the designer/developer combo to take full control of the experience. With a runtime built purposefully for Rive, developers can fully control the animation and its hierarchy, optimizing for real-time modifications.
+Moreover, the runtimes and the exported Rive files are tiny, often smaller than Lottie. It runs on more FPS as compared to lottie because it uses less memory, cpu and graphics as compared to lottie.
