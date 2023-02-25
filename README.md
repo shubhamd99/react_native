@@ -95,6 +95,9 @@ The user taps on a button. This action is understood by the main thread and pass
 
 What is cool about React Native (in comparison to other platforms such as Cordova) is that it doesn’t run its code inside of a WebView. It uses native views. This advantage means that we’ll be able to develop smooth and fast apps that can run at 60 FPS. If you modify the state of a component that is very high in the tree (and you didn’t dedicate too much time to prevent useless re-renders), then the whole component tree will be re-rendered. This won’t be visible to the user in most cases. However, if those descendants are computationally expensive, then you’ll notice your app stuttering for a little bit.
 
+## StyleSheet
+A StyleSheet is an abstraction similar to CSS StyleSheets. Making a stylesheet from a style object makes it possible to refer to it by ID instead of creating a new style object every time. It also allows to send the style only once through the bridge. All subsequent uses are going to refer an id.
+
 ## VirtualizedList
 
 Base implementation for the more convenient <FlatList> and <SectionList> components, which are also better documented. In general, this should only really be used if you need more flexibility than FlatList provides, e.g. for use with immutable data instead of plain arrays.
