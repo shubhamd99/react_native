@@ -43,6 +43,9 @@ Issues in React Native Threads: If you understand the life cycle of these three 
 * A large amount of space is occupied by DOM.
 * Stuttering during a components mounting logic.
 
+## Worklets
+The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline. With Worklets, you can run JavaScript and WebAssembly code to do graphics rendering or audio processing where high performance is required. Worklets are restricted to specific use cases; they cannot be used for arbitrary computations like Web Workers.
+
 ## How react native works under the hood?
 
 #### Firstly, let’s clear up two things:
@@ -263,3 +266,43 @@ The Codegen is invoked automatically by React Native every time an iOS or Androi
 ## AsyncTask
 
 AsyncTask is an abstract class in Android that offers us the freedom to execute demanding tasks in the background while keeping the UI thread light and the application responsive.
+
+## Animations in React Native
+
+JS driven animations occupy the bridge and slow down the application.
+
+### Animated
+
+The Animated library is designed to make animations fluid, powerful, and painless to build and maintain. 
+By using the native driver in Animated, we send everything about the animation to native before starting the animation, allowing native code to perform the animation on the UI thread without having to go through the bridge on every frame. Once the animation has started, the JS thread can be blocked without affecting the animation. Animatable components are as follows:
+
+* Animated.Image
+* Animated.ScrollView
+* Animated.Text
+* Animated.View
+* Animated.FlatList
+* Animated.SectionList
+
+### Cons of Animated:
+
+Enabling the usage of the native driver is the easiest way of quickly improving your animations performance. However, the subset of style props that can be used together with the native driver is limited. You can use it with non-layout properties like transforms and opacity. It will not work with colors, height and others.
+
+### React Native ReAnimated
+For more complex use cases you can use the React Native Reanimated library. Its API is compatible with the basic Animated library and introduces a set of fine grained controls for your animations with a modern hook based interface. More importantly, it introduces the possibility to animate all possible style props with the native driver. So animating heigh or color will no longer be an issue.
+Reanimated supports syncronous JS execution on the UI thread using the concepts of worklets. The library runtime spawns a secondary JS context on the UI thread that is then able to run JS functions in the form of said worklets. 
+
+### React Native Gesture Handler
+This library allows you to  handler different gestures natively and interpolate those into animations. You can create swipable element by combing it with Animated. While it will still require JS callbacks, there's remedy for that!
+The most powerful pair of tools for gesture-driven animations is using gesture handler combined with renanimated. They were designed to work together and give the possibility to build complex gesture-driven animations that are fully calcualted on the native side.
+
+### Interaction Manager
+It is not always possible to fully control the way animations are implemented. For example, React Navigation uses a combination of RN Gesture handler and Animated which still needs JavaScript to control the animation runtime. As a result, your animation may start flickering if the screen your are navigating to loads a heavy UI. Fortunately, you can postpone the execution of such actions using `Interactionmanager`.
+
+Interaction Manager provides us the ability to schedule long-running work/tasks to run after the completion of any interactions/animations.
+The tasks can be scheduled with the help of the following command:
+
+```tsx
+InteractionManager.runAfterInteractions(() => {
+    someLongTask() // or animations
+});
+```
