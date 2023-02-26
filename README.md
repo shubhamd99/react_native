@@ -349,3 +349,8 @@ Snapshot tests are a very useful tool whenever you want to make sure your UI doe
 ### Detox (End to end testing)
 The end-to-end testing and automation framework for React Native apps.
 The most popular E2E test runner within React Native community and a part of the React Native testing pipeline. With Detox, you will be able to ensure that your framework of choice is supported by the latest React Native versions.
+
+## CI/CD
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment.
+Example: CircleCI or Github Actions (are based on Docker containers and the idea of composing different jobs into workflows)
+
