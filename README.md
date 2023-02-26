@@ -159,7 +159,16 @@ In the end, lots of objects have to be garbage collected. If the user scrolls th
 
 Flipper is a highly extensible mobile app debugger used to debug iOS, Android and React Native applications. It lets you inspect, control, and visualize your application from its desktop application.
 
-It contains a long list of must-have debugging tools like log viewer, interactive layout inspector, and network inspector. It can be used as it is provided or you can extend it using the plugin API. It helps you debug apps running in an emulator/simulator or connected physical development devices.
+It contains a long list of must-have debugging tools like log viewer, interactive layout inspector, and network inspector. It can be used as it is provided or you can extend it using the plugin API. It helps you debug apps running in an emulator/simulator or connected physical development devices. 
+
+Flipper for React Native is shipped with React DevTools, Hermes debugger and Metro bundler integration. You can use Flipper for tasks such as detecting memory leaks, previewing the content of Shared Preferences or inspecting loaded images.
+
+### Find and Remove unused dependencies
+Every bit of native code we use in our apps has a runtime cost associated with reading, loading and executing said code. The more native dependencies our apps have, the slower it is for apps to start.
+
+```
+npx depcheck
+```
 
 ## React Native JSI
 
