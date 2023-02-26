@@ -337,3 +337,15 @@ For example, if we tap on a button, the state of the animation changes for the n
 
 Rive, on the other hand, is built from the ground up to make transitions and animations easy to build. Rive’s runtimes can take things a step further by allowing the designer/developer combo to take full control of the experience. With a runtime built purposefully for Rive, developers can fully control the animation and its hierarchy, optimizing for real-time modifications.
 Moreover, the runtimes and the exported Rive files are tiny, often smaller than Lottie. It runs on more FPS as compared to lottie because it uses less memory, cpu and graphics as compared to lottie.
+
+## Testing in React Native
+
+### Jest (Javascript Testing)
+Jest is a JavaScript testing framework built on top of Jasmine and maintained by Meta. It works with projects using: Babel, TypeScript, Node, React, Angular, Vue and more.
+
+### Snapshot Testing
+Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly. A typical snapshot test case renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
+
+### Detox (End to end testing)
+The end-to-end testing and automation framework for React Native apps.
+The most popular E2E test runner within React Native community and a part of the React Native testing pipeline. With Detox, you will be able to ensure that your framework of choice is supported by the latest React Native versions.
