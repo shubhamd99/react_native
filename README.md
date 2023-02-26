@@ -82,6 +82,11 @@ Tree shaking is a term commonly used within a JavaScript context to describe the
 
 Hermes is an open-source JavaScript engine optimized for React Native. For many apps, using Hermes will result in improved start-up time, decreased memory usage, and smaller app size when compared to JavaScriptCore. React Native comes with a bundled version of Hermes. React Native applications running on 0.70 will have Hermes enabled by default. 
 
+The majority of modern browser engines use just-in-time (JIT) compilers. It means that the code is translated and executed line-by-line. However, the JIT compiler keeps track of warm code segments (the ones that appear a few times) and hot code segments (the ones that run many times). These frequently occuring code segments are then sent to compiler that, depending on how many times they appear in the program, compiles them to the machine code and optionlly, performs some optimizations.
+
+
+Hermes unlike other engines, is an AOT (ahead-of-time) engine. It means that entire bundle is compiled to bytecode ahead of time. As a result, certain optimizations that JIT (just-in-time) compilers would perform on hot code segments are not present. On one hand it makes Hermes bundles underperform in benchmarks that are CPU-oriented. However, these benchmarks are not really comparable to a real-life mobile app experience, where TTI and application size takes priority.
+
 ### The React Native Bridge
 
 The RN bridge is written in Java/C++ and it allows the communication between the main thread of your app and the JavaScript thread. It uses a custom message-passing protocol for allowing this communication to happen.
