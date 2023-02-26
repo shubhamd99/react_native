@@ -367,3 +367,12 @@ Normally when you want to update your app, you need first to build it and then s
 
 Imagine a situation where an app with a critical error was published to users by mistake. In these cases, every second count. And this is where Over The Air (OTA) may help us. In short, OTA allows us to send updated Javascript bundles directly to users without the need of accepting them by Apple or Google. We can fix errors or push small updates (more on those later) almost immediately. Example: Microsoft CodePush (AppCenter), EAS (Expo App Services), DUS by Flipkart
 
+## DMAIC process
+
+Use DMAIC (DEFINE MEASURE ANALYZE IMPROVE CONTROL) methodology to help you solve performance issues consistently
+
+* Define the problem, improvement activity, opportunity for improvement, the project goals, and customer (internal and external) requirements.
+* Measure process performance.
+* Analyze the process to determine root causes of variation, poor performance (defects).
+* Improve process performance by addressing and eliminating the root causes.
+* Control the improved process and future process performance.
