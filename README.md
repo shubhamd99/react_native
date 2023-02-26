@@ -354,3 +354,16 @@ The most popular E2E test runner within React Native community and a part of the
 CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment.
 Example: CircleCI or Github Actions (are based on Docker containers and the idea of composing different jobs into workflows)
 
+### Fastlane
+The easiest way to build and release mobile apps. It Automates your development and release process.
+
+### OTA
+Over The Air (OTA) updates are one of the advantages of React Native apps over native ones. In React Native apps, code is split into two parts:
+
+* Native binaries – the part with native code that is compiled
+* Javascript bundle – the bundle with Javascript code and assets that is not compiled
+
+Normally when you want to update your app, you need first to build it and then send it to App Store or Google Play. A major drawback of this solution is the time needed for these stores to approve your update.
+
+Imagine a situation where an app with a critical error was published to users by mistake. In these cases, every second count. And this is where Over The Air (OTA) may help us. In short, OTA allows us to send updated Javascript bundles directly to users without the need of accepting them by Apple or Google. We can fix errors or push small updates (more on those later) almost immediately. Example: Microsoft CodePush (AppCenter), EAS (Expo App Services), DUS by Flipkart
+
