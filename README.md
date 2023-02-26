@@ -175,6 +175,10 @@ Every bit of native code we use in our apps has a runtime cost associated with r
 npx depcheck
 ```
 
+## Proguard
+Proguard is a great tool for creating a production-ready application in Android. It assists us in reducing code and making apps faster.
+To make your app as small as possible, you should enable shrinking in your release build to remove unused code and resources. When enabling shrinking, you also benefit from obfuscation, which shortens the names of your app’s classes and members, and optimization, which applies more aggressive strategies to further reduce the size of your app. 
+
 ## React Native JSI
 
 As some of you know, in React Native, the JS side and Native side communication work with Bridge foundation. Because of JS side already has a well-isolated environment, it doesn’t have any mechanism to talk with the Native side. For example, you cannot access the device name, or you are unable to get the local IP address of a current device in a JavaScript environment without creating Native modules.
