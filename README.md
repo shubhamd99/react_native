@@ -50,6 +50,13 @@ Issues in React Native Threads: If you understand the life cycle of these three 
 ## Worklets
 The Worklet interface is a lightweight version of Web Workers and gives developers access to low-level parts of the rendering pipeline. With Worklets, you can run JavaScript and WebAssembly code to do graphics rendering or audio processing where high performance is required. Worklets are restricted to specific use cases; they cannot be used for arbitrary computations like Web Workers.
 
+## useImperativeHandle
+useImperativeHandle is a React Hook that lets you customize the handle exposed as a ref.
+
+```
+useImperativeHandle(ref, createHandle, dependencies?)
+```
+
 ## How react native works under the hood?
 
 #### Firstly, let’s clear up two things:
