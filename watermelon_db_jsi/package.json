@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.25.5",
+    "@nozbe/with-observables": "^1.4.1",
+    "@types/recompose": "^0.30.10",
     "react": "18.2.0",
-    "react-native": "0.71.4"
+    "react-native": "0.71.4",
+    "recompose": "^0.30.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",

@@ -5,9 +5,14 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.bridge.JSIModuleSpec;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
+
+import java.util.Collections;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -26,6 +31,17 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           return packages;
+        }
+
+          @Override
+          protected JSIModulePackage getJSIModulePackage() {
+              return (reactApplicationContext, jsContext) -> {
+                  List<JSIModuleSpec> modules = Collections.emptyList();
+
+                  modules.addAll(new WatermelonDBJSIPackage().getJSIModules(reactApplicationContext, jsContext));
+
+                  return modules;
+              };
         }
 
         @Override
