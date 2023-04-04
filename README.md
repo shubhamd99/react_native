@@ -426,6 +426,22 @@ This part of the architecture will find databases, network layers, and services.
 When working with ViewModel, you will need to inject dependencies that can help quickly collect the data and send it to the View. That’s where the provider will help. 
 This block doesn’t carry any logic. It is designed to connect the different blocks properly.
 
+
+## SSL Pinning
+
+SSL (Secure socket layer) Certificate Pinning, or pinning for short, is the process of associating a host with its certificate or public key. Once you know a host’s certificate or public key, you pin it to that host.
+
+In other words, you configure the app to reject all but one or a few predefined certificates or public keys. Whenever the app connects to a server, it compares the server certificate with the pinned certificate(s) or public key(s). If and only if they match, the app trusts the server and establishes the connection.
+
+You usually add a service’s certificate or public key at development time. In other words, your mobile app should include the digital certificate or the public key within your app’s bundle. This is the preferred method since an attacker cannot taint the pin.
+
+
+#### Types of SSL Certificate Pinning
+
+* Pin the certificate: You can download the server’s certificate and bundle it into your app. At runtime, the app compares the server’s certificate to the one you’ve embedded.
+
+* Pin the public key: You can retrieve the certificate’s public key and include it in your code as a string. At runtime, the app compares the certificate’s public key to the one hard-coded in your code.
+
 ## Redux
 
 ### Redux Slice
