@@ -426,3 +426,7 @@ This part of the architecture will find databases, network layers, and services.
 When working with ViewModel, you will need to inject dependencies that can help quickly collect the data and send it to the View. That’s where the provider will help. 
 This block doesn’t carry any logic. It is designed to connect the different blocks properly.
 
+## Redux
+
+### Redux Slice
+createSlice takes an object of reducer functions, a slice name, and an initial state value and lets us auto-generate action types and action creators, based on the names of the reducer functions that we supply. It also helps you organize all of your Redux-related logic for a given slice into a single file. More Details: https://redux-toolkit.js.org/api/createSlice
