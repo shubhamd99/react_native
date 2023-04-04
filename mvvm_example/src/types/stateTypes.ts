@@ -20,3 +20,10 @@ export type TodoStateType = {
 export type StoreType = {
   todo: TodoStateType;
 };
+
+export type TodoData = {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+};

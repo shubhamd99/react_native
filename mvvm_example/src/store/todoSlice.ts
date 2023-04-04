@@ -8,6 +8,12 @@ export const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    setLoading: (state, action: {payload: boolean; type: string}) => {
+      state.fetchingTodos = action.payload;
+    },
+    addTodos: (state, action: {payload: TodoItemType[]; type: string}) => {
+      state.todos = action.payload;
+    },
     createTodo: (state, action: {payload: {title: string}; type: string}) => {
       state.todos = state.todos.concat([
         {title: action.payload.title, id: nanoid()},
@@ -31,12 +37,15 @@ export const todoSlice = createSlice({
   },
 });
 
-const {createTodo, updateTodo, deleteTodo} = todoSlice.actions;
+const {addTodos, createTodo, updateTodo, deleteTodo, setLoading} =
+  todoSlice.actions;
 
 export const TodoAction = {
+  addTodos,
   createTodo,
   updateTodo,
   deleteTodo,
+  setLoading,
 };
 
 export default todoSlice.reducer;

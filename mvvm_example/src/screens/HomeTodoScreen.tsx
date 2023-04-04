@@ -1,17 +1,33 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import {TodoItem} from '../components';
 import useHomeTodoController from '../view-controllers/useHomeTodoController';
 import {TodoItemType} from '../types/genericTypes';
 
 const HomeTodoScreen = () => {
-  const {todos, onPressTodoItem, onPressCreate} = useHomeTodoController();
+  const {todos, onPressTodoItem, onPressCreate, fetchingTodos} =
+    useHomeTodoController();
 
   const renderTodoList = ({item}: {item: TodoItemType}) => {
     return (
       <TodoItem title={item.title} onPress={() => onPressTodoItem(item)} />
     );
   };
+
+  if (fetchingTodos) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.background}>
@@ -33,6 +49,11 @@ const HomeTodoScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  loader: {
+    flex: 1,
+    backgroundColor: '#fff',
+    width: '100%',
+  },
   background: {
     flex: 1,
     backgroundColor: '#fff',

@@ -1,4 +1,6 @@
 import {useSelector, useDispatch} from 'react-redux';
+import todoResponseTransformer from '../model/transformer/todoResponseTransformer';
+import TodoRepository from '../repository/todoRepository';
 import {TodoAction} from '../store/todoSlice';
 
 import {StoreType, TodoStateType} from '../types/stateTypes';
@@ -22,10 +24,27 @@ const useTodoViewModel = () => {
     deleteTodoError,
   }: TodoStateType = useSelector((state: StoreType) => state.todo);
 
-  const {createTodo, updateTodo, deleteTodo} = TodoAction;
+  const {addTodos, createTodo, updateTodo, deleteTodo, setLoading} = TodoAction;
+
+  const setLoader = (loadingState: boolean) =>
+    dispatch(setLoading(loadingState));
+
+  const fetchTodos = async () => {
+    setLoader(true); // Loading Start
+
+    TodoRepository.getAllTodos({
+      onComplete: res => {
+        dispatch(addTodos(todoResponseTransformer(res).slice(0, 10)));
+        setLoader(false); // Loading End
+      },
+      onError: () => {
+        setLoader(false); // Loading End
+      },
+    });
+  };
 
   return {
-    // fetchTodos,
+    fetchTodos,
     fetchingTodos,
     todos,
 
