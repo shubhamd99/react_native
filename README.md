@@ -387,3 +387,42 @@ Use DMAIC (DEFINE MEASURE ANALYZE IMPROVE CONTROL) methodology to help you solve
 * Analyze the process to determine root causes of variation, poor performance (defects).
 * Improve process performance by addressing and eliminating the root causes.
 * Control the improved process and future process performance.
+
+## MVC - Model-View-Controller
+
+This is the standard pattern that most applications use to separate the model from the view. In this format, the controller identifies the data that matches the model.
+
+With this pattern, the frontend and backend work as separate components, and the controller will be responsible for fetching the data, rendering the requests, and ensuring smooth communication.
+
+## MVVM Architecture (Model-View-ViewMode)
+
+Model-View-ViewModel (MVVM) is a software design pattern that is structured to separate program logic and user interface controls. MVVM is also known as model-view-binder and was created by Microsoft architects Ken Cooper and John Gossman.
+
+### The four main blocks for any MVVM include:
+
+1. View
+2. ViewController
+3. ViewModel
+4. Model
+5. Provider (Extra)
+
+
+#### View
+The view is your Interface, which you build with React Native framework. This is the point where the user will interact with your application.
+Either they will input a command, use mouse movements or press a key to trigger the ViewController from the interface.
+The interface doesn’t do much except take in and give out the display data.
+
+#### ViewController
+The ViewController will take up the command and pass it on to the ViewModel. It is important to note that one ViewController can pass commands to several ViewModels. You won't need to ramp up the controllers in this case.
+
+#### ViewModel
+This is the third and most important block of the MVVM architecture. At this point, the block is not communicating with the interface directly. So, it will not know whether the interface was built using React, Vue, or any other framework. It is a JS class that you can reuse to make any application.
+
+#### Model
+This is your source for accessing the data; from here, the ViewModel and ViewController will gain the necessary output and send it to View.
+This part of the architecture will find databases, network layers, and services. Your logic should be restricted to helping the model send the necessary updates to the View.
+
+#### Provider
+When working with ViewModel, you will need to inject dependencies that can help quickly collect the data and send it to the View. That’s where the provider will help. 
+This block doesn’t carry any logic. It is designed to connect the different blocks properly.
+
