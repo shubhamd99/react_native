@@ -460,3 +460,23 @@ Suspense is a feature for managing asynchronous operations in a React app. It le
 
 React Freeze builds on the ideas presented in React Suspense, enabling you to pause component rendering for a good user experience.
 This library lets you freeze the renders of parts of the React component tree using Suspense mechanism introduced in React 17. The main use case of this library is to avoid unnecessary re-renders of parts of the app that are not visible to the user at a given moment. 
+
+## Code Splitting
+
+Code Splitting is a technique that splits the code into multiple files, which can be loaded on demand and in parallel.
+
+It can be used to:
+
+* Optimize the initial size of the application and to improve the startup performance by deferring the parsing (only with JSC) and execution (JSC and Hermes) of the non-critical code.
+* Dynamically deliver content and features to the users based on runtime factors: user's role, subscription plan, preferences etc.
+* For developers and companies: split and isolate pieces of the product to improve scalability and reduce coupling.* 
+
+### Re.Pack
+
+The main feature of Re.Pack is Webpack and its ecosystem of loaders, plugins and support for various features like symlinks, aliases etc. However, because Re.Pack is based on Webpack, it is targeted towards advanced users who already know how to use Webpack and want to leverage Webpack ecosystem.
+
+Code Splitting is one of the most important features in Re.Pack, and it's based on Webpack's infrastructure as well as the native module that allows to execute the additional code on the same JavaScript context (same React Native instance).
+
+Code Splitting with Re.Pack is not designed to add new features dynamically without doing the regular App Store or Play store release. It can be used to deliver fixes or tweaks to additional (split) code, similarly to Code Push, but you should not add new features with it.
+
+URL - https://re-pack.netlify.app/docs/code-splitting/guide-async-chunks
