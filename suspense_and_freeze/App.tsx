@@ -11,9 +11,11 @@ import {
   StatusBar,
   StyleSheet,
   useColorScheme,
+  View,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import FreezeScreen from './src/screens/FreezeScreen';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -28,6 +30,9 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+      <View style={styles.container}>
+        <FreezeScreen />
+      </View>
     </SafeAreaView>
   );
 }
@@ -35,6 +40,9 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+  },
+  container: {
+    justifyContent: 'center',
   },
 });
 
