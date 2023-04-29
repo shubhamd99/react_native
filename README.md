@@ -446,3 +446,17 @@ You usually add a service’s certificate or public key at development time. In 
 
 ### Redux Slice
 createSlice takes an object of reducer functions, a slice name, and an initial state value and lets us auto-generate action types and action creators, based on the names of the reducer functions that we supply. It also helps you organize all of your Redux-related logic for a given slice into a single file. More Details: https://redux-toolkit.js.org/api/createSlice
+
+
+## React Suspense
+
+React 18, also known as the Concurrent React, released earlier this year and brought with it important changes. The most impactful one is the new concurrent rendering engine, which is what the new Concurrent Rendering feature “Suspense” is based on.
+
+<Suspense> lets you display a fallback until its children have finished loading.
+
+Suspense is a feature for managing asynchronous operations in a React app. It lets your components communicate to React that they’re waiting for some data.
+
+### React Freeze
+
+React Freeze builds on the ideas presented in React Suspense, enabling you to pause component rendering for a good user experience.
+This library lets you freeze the renders of parts of the React component tree using Suspense mechanism introduced in React 17. The main use case of this library is to avoid unnecessary re-renders of parts of the app that are not visible to the user at a given moment. 
