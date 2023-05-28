@@ -7,8 +7,8 @@
 
 import React from 'react';
 import {SafeAreaView, StatusBar, StyleSheet, View} from 'react-native';
-
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Home from './src/screens/Home';
 
 function App(): JSX.Element {
   const backgroundStyle = {
@@ -21,7 +21,9 @@ function App(): JSX.Element {
         barStyle={'light-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={styles.container}></View>
+      <View style={styles.container}>
+        <Home />
+      </View>
     </SafeAreaView>
   );
 }
@@ -29,7 +31,8 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    width: '100%',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
