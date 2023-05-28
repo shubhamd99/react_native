@@ -6,8 +6,9 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import OtpScreen from './src/screens/OtpScreen';
 
 function App(): JSX.Element {
   const backgroundStyle = {
@@ -16,10 +17,7 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={[styles.safeAreaView, backgroundStyle]}>
-      <StatusBar
-        barStyle={'light-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+      <OtpScreen />
     </SafeAreaView>
   );
 }
@@ -27,6 +25,7 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
 
