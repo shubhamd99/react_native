@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NativeModuleWithKotlin</string>
+    <string name="video_title">Video Title</string>
 </resources>
