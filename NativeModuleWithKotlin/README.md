@@ -2,4 +2,4 @@
 
 ### Video Streaming Module and Toast Module
 
-![video_url](https://i.imgur.com/7206zg9.mp4)
+Screenshots - https://imgur.com/7206zg9
