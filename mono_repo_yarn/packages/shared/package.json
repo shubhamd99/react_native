@@ -1,0 +1,21 @@
+{
+  "name": "@example-app/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "rimraf dist && tsc",
+    "postinstall": "yarn build",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-native": "0.71.10"
+  },
+  "devDependencies": {
+    "rimraf": "5.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
