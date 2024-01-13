@@ -9,6 +9,7 @@ import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import OtpScreen from './src/screens/OtpScreen';
+import Config from 'react-native-config';
 
 function App(): JSX.Element {
   const backgroundStyle = {
@@ -29,4 +30,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+let AppEntryPoint = null;
+
+if (Config.STORYBOOK_ENABLED === 'true') {
+  AppEntryPoint = require('./.storybook').default;
+} else {
+  AppEntryPoint = App;
+}
+
+export default AppEntryPoint;
