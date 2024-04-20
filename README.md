@@ -514,3 +514,44 @@ The main advantage though is the possibility of sharing packages between React a
 https://github.com/shubhamd99/react_native/tree/master/mono_repo_yarn
 
 While setting up a monorepo, we have two options: we can either hoist the packages to the root level or prevent them from hoisting. Yarn workspaces have an option named nohoist which allows us to specify packages that aren’t hoisted. It depends on your use case but most of the time it’s better to hoist packages to the root level.
+
+## Shared preferences
+
+If you have a relatively small collection of key-values that you'd like to save, you can use the SharedPreferences APIs. A SharedPreferences object points to a file containing key-value pairs and provides simple methods to read and write them. Each SharedPreferences file is managed by the framework and can be private or shared.
+
+### RN Package
+
+- Package Name - react-native-shared-group-preferences
+
+```jsx
+import SharedGroupPreferences from "react-native-shared-group-preferences";
+
+const appGroupIdentifier = "group.com.mytest";
+const userData = {
+  name: "Vin Diesel",
+  age: 34,
+  friends: ["Lara Croft", "Mike Meyers"],
+};
+await SharedGroupPreferences.setItem("savedData", data, appGroupIdentifier);
+const loadedData = await SharedGroupPreferences.getItem(
+  "savedData",
+  appGroupIdentifier
+);
+```
+
+- The file is saved to the user's storage in the following format: $storage/$appGroupIdentifier/data.json. So make sure your appGroupIdentifier is a valid folder name
+
+### Check if anyother app is installed or not
+
+```jsx
+// This Android only script lets you check if another app is installed based on package name. The example below is for Facebook.
+const facebookPackageName = "com.facebook.android";
+try {
+  const installed = await SharedGroupPreferences.isAppInstalledAndroid(
+    facebookPackageName
+  );
+  console.log("Facebook is installed on this device");
+} catch (err) {
+  console.log("Facebook is not installed");
+}
+```
