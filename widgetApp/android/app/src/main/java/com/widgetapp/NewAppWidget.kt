@@ -4,6 +4,9 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.RemoteViews
+import org.json.JSONException
+import org.json.JSONObject
+
 
 /**
  * Implementation of App Widget functionality.
@@ -34,11 +37,19 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    val widgetText = context.getString(R.string.appwidget_text)
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.new_app_widget)
-    views.setTextViewText(R.id.appwidget_text, widgetText)
+    try {
+        val sharedPref = context.getSharedPreferences("DATA", Context.MODE_PRIVATE)
+        val appString = sharedPref.getString("appData", "{\"text\":'no data'}")
+        val appData = JSONObject(appString)
 
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+        val widgetText = context.getString(R.string.appwidget_text)
+        // Construct the RemoteViews object
+        val views = RemoteViews(context.packageName, R.layout.new_app_widget)
+        views.setTextViewText(R.id.appwidget_text, appData.getString("text"))
+
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(appWidgetId, views)
+    } catch (e: JSONException) {
+        e.printStackTrace()
+    }
 }

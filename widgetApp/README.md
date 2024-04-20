@@ -43,4 +43,8 @@ try {
 
 ## Create a new widget
 
-[widget_create](https://i.imgur.com/E3IhwgF.png)
+![widget_create](https://i.imgur.com/E3IhwgF.png)
+
+![widget_create](https://i.imgur.com/1RJxpJL.png)
+
+![widget_create](https://i.imgur.com/WG2FXyv.png)
