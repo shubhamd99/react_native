@@ -555,3 +555,8 @@ try {
   console.log("Facebook is not installed");
 }
 ```
+
+## DNS over HTTPS
+
+DNS over HTTPS (DoH) is a protocol that encrypts DNS traffic by passing DNS queries through an HTTPS encrypted session. DoH can help improve online security and privacy and protect DNS queries from attacks.
+Introduced in 2018, DoH works similarly to DNS but uses HTTPS sessions to keep the requests secure and minimize the visibility of the information exchanged during queries.
