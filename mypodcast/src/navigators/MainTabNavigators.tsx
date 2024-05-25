@@ -15,7 +15,7 @@ const ListenNowStackNavigator = () => {
         options={{
           title: 'Listen Now',
         }}
-        name="ListenNow"
+        name="ListenNowStack"
         component={ListenNowScreen}
       />
     </ListenNowStack.Navigator>
@@ -27,7 +27,7 @@ const SearchStack = createNativeStackNavigator();
 const SearchStackNavigator = () => {
   return (
     <SearchStack.Navigator>
-      <SearchStack.Screen name="Search" component={SearchScreen} />
+      <SearchStack.Screen name="SearchStack" component={SearchScreen} />
     </SearchStack.Navigator>
   );
 };
@@ -37,7 +37,7 @@ const LibraryStack = createNativeStackNavigator();
 const LibraryStackNavigator = () => {
   return (
     <LibraryStack.Navigator>
-      <LibraryStack.Screen name="Library" component={LibraryScreen} />
+      <LibraryStack.Screen name="LibraryStack" component={LibraryScreen} />
     </LibraryStack.Navigator>
   );
 };

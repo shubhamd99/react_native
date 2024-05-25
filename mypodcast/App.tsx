@@ -3,13 +3,17 @@ import {UtilityThemeProvider} from 'react-native-design-utility';
 import {theme} from './src/constants/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import MainStackNavigator from './src/navigators/MainStackNavigators';
+import {ApolloProvider} from '@apollo/client';
+import {client} from './src/graphql/client';
 
 const App = () => {
   return (
     <UtilityThemeProvider theme={theme}>
-      <NavigationContainer>
-        <MainStackNavigator />
-      </NavigationContainer>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <MainStackNavigator />
+        </NavigationContainer>
+      </ApolloProvider>
     </UtilityThemeProvider>
   );
 };
