@@ -1,7 +1,8 @@
 import React from 'react';
 import {Box, Text} from 'react-native-design-utility';
 import {FlatList, StyleSheet, TextInput} from 'react-native';
-import {useLazyQuery} from '@apollo/client';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
 import {theme} from '../../constants/theme';
 import {
   SearchQuery,
@@ -12,6 +13,7 @@ import searchQuery from '../../graphql/query/searchQuery';
 import SearchEmpty from './SearchEmpty';
 import SearchTile from './SearchTile';
 import SearchLoading from './SearchLoading';
+import {useLazyQuery} from '@apollo/client';
 
 const SearchScreen = () => {
   const [term, setTerm] = React.useState<string>('');
@@ -24,22 +26,33 @@ const SearchScreen = () => {
     try {
       await search({variables: {term}});
     } catch (ex) {
-      console.log('Ex::', ex);
+      console.log('error', ex);
     }
   };
 
   return (
     <Box f={1} bg="white">
       <Box h={50} w="100%" px="sm" my="sm">
-        <TextInput
-          style={s.input}
-          placeholder="Search Podcast"
-          selectionColor={theme.color.blueLight}
-          onChangeText={setTerm}
-          autoCorrect={false}
-          onSubmitEditing={onSearch}
-          value={term}
-        />
+        <Box
+          dir="row"
+          align="center"
+          h={40}
+          bg="greyLightest"
+          radius={10}
+          px="sm">
+          <Box mr={10}>
+            <FeatherIcon name="search" size={20} color={theme.color.greyDark} />
+          </Box>
+          <TextInput
+            style={s.input}
+            placeholder="Search Podcast"
+            selectionColor={theme.color.blueLight}
+            onChangeText={setTerm}
+            autoCorrect={false}
+            onSubmitEditing={onSearch}
+            value={term}
+          />
+        </Box>
       </Box>
 
       {error ? (
@@ -63,11 +76,7 @@ const SearchScreen = () => {
 
 const s = StyleSheet.create({
   input: {
-    height: 40,
     flex: 1,
-    backgroundColor: theme.color.greyLightest,
-    borderRadius: 10,
-    paddingHorizontal: theme.space.sm,
     fontSize: theme.text.size.md,
   },
   listContentContainer: {

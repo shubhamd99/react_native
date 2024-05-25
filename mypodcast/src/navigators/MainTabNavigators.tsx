@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import FeatherIcon from 'react-native-vector-icons/Feather';
 import ListenNowScreen from '../components/listenNow/ListenNowScreen';
 import SearchScreen from '../components/search/SearchScreen';
 import LibraryScreen from '../components/library/LIbraryScreen';
@@ -9,6 +9,8 @@ import PodcastDetailsScreen from '../components/podcastDetails/PodcastDetailsScr
 import {theme} from '../constants/theme';
 
 const ListenNowStack = createNativeStackNavigator();
+
+const ICON_SIZE = 24;
 
 const ListenNowStackNavigator = () => {
   return (
@@ -61,17 +63,45 @@ const MainTab = createBottomTabNavigator();
 
 const MainTabNavigator = () => {
   return (
-    <MainTab.Navigator>
+    <MainTab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: theme.color.blueLight,
+      }}>
       <MainTab.Screen
         name="ListenNow"
         options={{
           title: 'Listen Now',
-          headerShown: false,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: props => (
+            <FeatherIcon
+              color={props.color}
+              size={ICON_SIZE}
+              name="headphones"
+            />
+          ),
         }}
         component={ListenNowStackNavigator}
       />
-      <MainTab.Screen name="Library" component={LibraryStackNavigator} />
-      <MainTab.Screen name="Search" component={SearchStackNavigator} />
+      <MainTab.Screen
+        name="Library"
+        component={LibraryStackNavigator}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: props => (
+            <FeatherIcon color={props.color} size={ICON_SIZE} name="inbox" />
+          ),
+        }}
+      />
+      <MainTab.Screen
+        name="Search"
+        component={SearchStackNavigator}
+        options={{
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: props => (
+            <FeatherIcon color={props.color} size={ICON_SIZE} name="search" />
+          ),
+        }}
+      />
     </MainTab.Navigator>
   );
 };
