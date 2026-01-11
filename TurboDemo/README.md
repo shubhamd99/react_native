@@ -1,97 +1,237 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native 0.83 TurboModule (New Architecture) – Complete Guide
 
-# Getting Started
+This project shows how to create a **TurboModule** (the replacement of the old Bridge NativeModule) in **React Native 0.83+** using the **New Architecture**.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+We will expose a native method:
 
-## Step 1: Start Metro
+multiply(a, b)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+and call it directly from JavaScript using JSI.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## ✅ Prerequisites
 
-# OR using Yarn
-yarn start
+- Node.js 20+
+- React Native 0.83.x
+- Android Studio / Xcode installed
+- New Architecture (enabled by default in RN 0.83)
+
+Check:
+
+node -v
+
+---
+
+## 🏗️ Step 1 — Create Project
+
+npx @react-native-community/cli init TurboDemo --version 0.83.1  
+cd TurboDemo
+
+Test run:
+
+npx react-native run-android
+
+---
+
+## 📁 Step 2 — Folder Structure
+
+We keep TurboModule specs in `src/`:
+
+TurboDemo/  
+ src/  
+ NativeMath.ts  
+ App.tsx
+
+---
+
+## 🧾 Step 3 — Create TurboModule Spec (JS/TS)
+
+Create file:
+
+src/NativeMath.ts
+
+```ts
+import type { TurboModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
+
+export interface Spec extends TurboModule {
+  multiply(a: number, b: number): number;
+}
+
+export default TurboModuleRegistry.getEnforcing<Spec>('NativeMath');
 ```
 
-## Step 2: Build and run your app
+## ⚙️ Step 4 — Configure Codegen
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+Open:
 
-### Android
+package.json
 
-```sh
-# Using npm
-npm run android
+Add:
 
-# OR using Yarn
-yarn android
+```js
+"codegenConfig": {
+    "name": "TurboDemoSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+        "javaPackageName": "com.turbodemo"
+    }
+}
 ```
 
-### iOS
+Make sure:
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+- jsSrcsDir points to the folder containing NativeMath.ts
+- javaPackageName matches your Android package
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## 🔁 Step 5 — Run Codegen
 
-```sh
-bundle install
+cd android
+./gradlew generateCodegenArtifactsFromSchema
+cd ..
+
+Verify file exists:
+
+android/app/build/generated/source/codegen/java/com/turbodemo/NativeMathSpec.java
+
+## 🤖 Step 6 — Implement Android TurboModule
+
+Create file:
+
+android/app/src/main/java/com/turbodemo/NativeMathModule.kt
+
+```kotlin
+package com.turbodemo
+
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.module.annotations.ReactModule
+import com.facebook.react.turbomodule.core.interfaces.TurboModule
+
+@ReactModule(name = NativeMathModule.NAME)
+class NativeMathModule(
+  reactContext: ReactApplicationContext
+) : NativeMathSpec(reactContext), TurboModule {
+
+  override fun multiply(a: Double, b: Double): Double {
+    return a * b
+  }
+
+  companion object {
+    const val NAME = "NativeMath"
+  }
+}
 ```
 
-Then, and every time you update your native dependencies, run:
+## 📦 Step 7 — Create TurboPackage
 
-```sh
-bundle exec pod install
+Create file:
+
+android/app/src/main/java/com/turbodemo/MyTurboPackage.kt
+
+```kotlin
+package com.turbodemo
+
+import com.facebook.react.TurboReactPackage
+import com.facebook.react.bridge.NativeModule
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.module.model.ReactModuleInfo
+import com.facebook.react.module.model.ReactModuleInfoProvider
+
+class MyTurboPackage : TurboReactPackage() {
+
+  override fun getModule(name: String, context: ReactApplicationContext): NativeModule? {
+    if (name == NativeMathModule.NAME) {
+      return NativeMathModule(context)
+    }
+    return null
+  }
+
+  override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
+    mapOf(
+      NativeMathModule.NAME to ReactModuleInfo(
+        NativeMathModule.NAME,
+        NativeMathModule.NAME,
+        false,
+        false,
+        true,
+        false
+      )
+    )
+  }
+}
+
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## 🏗️ Step 8 — Register Package
 
-```sh
-# Using npm
-npm run ios
+Open:
 
-# OR using Yarn
-yarn ios
+android/app/src/main/java/com/turbodemo/MainApplication.kt
+
+Find:
+
+override fun getPackages(): List<ReactPackage> {
+
+Add:
+
+packages.add(MyTurboPackage())
+
+## ⚛️ Step 9 — Use TurboModule from JS
+
+Edit:
+
+src/App.tsx
+
+```ts
+import React from 'react';
+import { View, Text } from 'react-native';
+import NativeMath from './NativeMath';
+
+export default function App() {
+  const result = NativeMath.multiply(6, 7);
+
+  return (
+    <View style={{ marginTop: 100 }}>
+      <Text>Result from Native: {result}</Text>
+    </View>
+  );
+}
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## ▶️ Step 10 — Clean & Run
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+cd android
+./gradlew clean
+cd ..
+npx react-native run-android
 
-## Step 3: Modify your app
+You should see:
 
-Now that you have successfully run the app, let's make changes!
+Result from Native: 42
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## 🧠 What You Built
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+TurboModule (New Architecture)
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+JSI-based native call
 
-## Congratulations! :tada:
+Synchronous native method
 
-You've successfully run and modified your React Native App. :partying_face:
+No bridge, no JSON serialization
 
-### Now what?
+Type-safe via Codegen
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## 🪟 Windows Requirements (IMPORTANT)
 
-# Troubleshooting
+If you are building this project on Windows, you MUST install:
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+✅ Visual Studio 2022 Build Tools
 
-# Learn More
+React Native Android (NDK + CMake + Ninja) requires the Windows C++ toolchain even though it uses Clang internally.
 
-To learn more about React Native, take a look at the following resources:
+🔽 Download
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+https://visualstudio.microsoft.com/downloads/
+https://my.visualstudio.com/Downloads?q=Visual%20Studio%202022 (17.14)
