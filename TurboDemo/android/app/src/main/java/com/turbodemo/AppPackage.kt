@@ -28,8 +28,8 @@ class AppPackage : BaseReactPackage() {
                 NativeMathModule.NAME,
                 false, // canOverrideExistingModule
                 false, // needsEagerInit
-                true,  // isTurboModule ✅
-                false  // hasConstants
+                false, // cxx module
+                true // turbo module
             )
         )
 
