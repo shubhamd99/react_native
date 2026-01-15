@@ -1,5 +1,5 @@
 import { Pressable, Text, PressableProps } from 'react-native';
-import { ButtonVariant, cn, tokens, useTheme } from '@dls';
+import { ButtonVariant, cn, tokens, useTheme } from '../../dls';
 
 type ButtonSize = 'sm' | 'md' | 'lg';
 

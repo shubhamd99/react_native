@@ -1,5 +1,5 @@
 import { Text as RNText, TextProps } from 'react-native';
-import { cn, useTheme } from '@dls';
+import { cn, useTheme } from '../../dls';
 
 type TextVariant = 'h1' | 'h2' | 'h3' | 'body' | 'caption';
 

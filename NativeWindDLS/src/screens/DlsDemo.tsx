@@ -7,7 +7,7 @@ import {
   VStack,
   HStack,
   Screen,
-} from '@components';
+} from '../components';
 
 export function DlsDemo() {
   return (

@@ -1,19 +1,19 @@
 import './tailwind.css';
 
 import { StatusBar, useColorScheme } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { DlsDemo } from '@screens/DlsDemo';
+import { DlsDemo } from './src/screens/DlsDemo';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView className="flex-1">
+    <>
+      <SafeAreaProvider>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <DlsDemo />
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </>
   );
 }
 

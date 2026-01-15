@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps } from 'react-native';
-import { cn, tokens, useTheme } from '@dls';
+import { cn, tokens, useTheme } from '../../dls';
 
 type InputProps = TextInputProps & {
   className?: string;

@@ -1,5 +1,5 @@
 import { View, ViewProps } from 'react-native';
-import { cn, tokens, useTheme } from '@dls';
+import { cn, tokens, useTheme } from '../../dls';
 
 type CardProps = ViewProps & {
   className?: string;

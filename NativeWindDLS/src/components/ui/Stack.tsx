@@ -1,5 +1,5 @@
 import { View, ViewProps } from 'react-native';
-import { cn, tokens } from '@dls';
+import { cn, tokens } from '../../dls';
 
 type StackGap = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
