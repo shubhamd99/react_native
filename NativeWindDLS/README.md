@@ -1,97 +1,301 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🧱 React Native Design Language System (DLS)
 
-# Getting Started
+Built with NativeWind v4 + Tailwind + Tokens + Theme
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+This project contains a production-grade Design Language System (DLS) for React Native using:
 
-## Step 1: Start Metro
+⚡ NativeWind v4
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+🎨 Tailwind
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+🧱 Token-based design system
 
-```sh
-# Using npm
-npm start
+🌗 Theme-based color system (Light / Dark)
 
-# OR using Yarn
-yarn start
+🧩 Typed, reusable UI primitives
+
+🏗️ Enterprise-grade architecture
+
+## ✨ What This Gives You
+
+✅ Centralized design tokens (spacing, radius, layout rules)
+
+✅ Centralized theme system (colors, surfaces, borders, text)
+
+✅ No hardcoded UI values inside components
+
+✅ Light / Dark mode support
+
+✅ Absolute imports (@/dls, @/components)
+
+✅ Scalable, maintainable UI foundation
+
+## 📁 Folder Structure
+
+```sql
+src/
+ ├── dls/
+ │    ├── tokens.ts
+ │    ├── theme.ts
+ │    ├── useTheme.ts
+ │    ├── utils.ts
+ │    └── index.ts
+ │
+ ├── components/
+ │    ├── ui/
+ │    │    ├── Button.tsx
+ │    │    ├── Card.tsx
+ │    │    ├── Text.tsx
+ │    │    ├── Input.tsx
+ │    │    ├── Divider.tsx
+ │    │    ├── Stack.tsx
+ │    │    └── index.ts
+ │    │
+ │    ├── layout/
+ │    │    ├── Screen.tsx
+ │    │    └── index.ts
+ │    │
+ │    └── index.ts
+ │
+ ├── screens/
+ │    └── DlsDemo.tsx
+ │
+ └── App.tsx
+
 ```
 
-## Step 2: Build and run your app
+## 🎨 Design Architecture
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+1️⃣ Tokens = Shape & Spacing
 
-### Android
+`src/dls/tokens.ts`
 
-```sh
-# Using npm
-npm run android
+- Tokens control:
+- Spacing
+- Radius
+- Layout rhythm
+- Divider structure
+- Stack gaps
 
-# OR using Yarn
-yarn android
+```tsx
+export const tokens = {
+  spacing: {
+    sm: 'px-3 py-2',
+    md: 'px-4 py-3',
+    lg: 'px-6 py-4',
+    divider: 'my-4',
+    stack: {
+      xs: 'gap-1',
+      sm: 'gap-2',
+      md: 'gap-3',
+      lg: 'gap-4',
+      xl: 'gap-6',
+    },
+  },
+  radius: {
+    sm: 'rounded-md',
+    md: 'rounded-lg',
+    lg: 'rounded-xl',
+  },
+  divider: {
+    thickness: 'h-px',
+    width: 'w-full',
+  },
+};
 ```
 
-### iOS
+2️⃣ Theme = Colors & Surfaces
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+`src/dls/theme.ts`
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+- Theme controls:
+- Background
+- Text
+- Card
+- Borders
+- Buttons
+- Inputs
 
-```sh
-bundle install
+```tsx
+export const lightTheme = {
+  background: 'bg-white',
+  text: 'text-gray-900',
+  card: 'bg-gray-50',
+  border: 'border-gray-200',
+
+  button: {
+    primary: 'bg-brand-primary',
+    secondary: 'bg-brand-secondary',
+    danger: 'bg-brand-danger',
+    ghost: 'bg-transparent',
+  },
+
+  buttonText: {
+    solid: 'text-white',
+    ghost: 'text-brand-primary',
+  },
+
+  input: {
+    background: 'bg-white',
+    border: 'border-gray-300',
+    text: 'text-gray-900',
+    placeholder: 'placeholder:text-gray-400',
+    focusBorder: 'focus:border-brand-primary',
+  },
+};
 ```
 
-Then, and every time you update your native dependencies, run:
+Dark theme mirrors the same structure.
 
-```sh
-bundle exec pod install
+3️⃣ Theme Hook
+
+`src/dls/useTheme.ts`
+
+```tsx
+import { useColorScheme } from 'react-native';
+import { lightTheme, darkTheme } from './theme';
+
+export function useTheme() {
+  const scheme = useColorScheme();
+  return scheme === 'dark' ? darkTheme : lightTheme;
+}
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+4️⃣ DLS Public API (Barrel File)
 
-```sh
-# Using npm
-npm run ios
+`src/dls/index.ts`
 
-# OR using Yarn
-yarn ios
+```tsx
+export * from './tokens';
+export * from './theme';
+export * from './utils';
+export * from './useTheme';
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Usage
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```tsx
+import { tokens, useTheme, cn } from '@/dls';
+```
 
-## Step 3: Modify your app
+## 🧩 Core UI Components
 
-Now that you have successfully run the app, let's make changes!
+All components follow this rule:
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+❌ No hardcoded colors
+❌ No hardcoded spacing
+❌ No hardcoded radius
+✅ Colors from theme
+✅ Layout from tokens
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+🔘 Button
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+- Token driven spacing & radius
+- Theme driven colors
+- Variants: primary | secondary | danger | ghost
+- Supports disabled
 
-## Congratulations! :tada:
+```tsx
+<Button title="Save" />
+<Button title="Delete" variant="danger" />
+<Button title="Cancel" variant="ghost" />
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+🧾 Card
 
-### Now what?
+- Uses theme.card and theme.border
+- Uses tokens.radius and tokens.spacing
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+✍️ Text
 
-# Troubleshooting
+- Typography variants: h1 | h2 | h3 | body | caption
+- Colors come from theme
+- No hardcoded text colors
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+📥 Input
 
-# Learn More
+- Background, border, text, placeholder from theme
+- Padding & radius from tokens
 
-To learn more about React Native, take a look at the following resources:
+➖ Divider
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- Thickness, width, spacing from tokens
+- Color from theme
+
+🧱 Stack (Layout System)
+
+```tsx
+<VStack gap="lg">
+  <Text variant="h1">Title</Text>
+  <Button title="Continue" />
+</VStack>
+
+<HStack justify="between" align="center">
+  <Text>Left</Text>
+  <Button title="Save" />
+</HStack>
+```
+
+- Tokenized gap system
+- Semantic align & justify props
+
+🖥️ Screen
+
+Every screen must start with:
+
+```tsx
+<Screen>...</Screen>
+```
+
+Applies:
+
+- flex-1
+- theme.background
+
+Token padding:
+
+- Can disable padding with:
+
+```tsx
+<Screen padded={false} />
+```
+
+📱 Demo Screen
+
+`src/screens/DlsDemo.tsx`
+
+A full UI built only using DLS components:
+
+- Header
+- Card
+- Inputs
+- Buttons
+- Divider
+- Stack layouts
+
+## 🧠 Architectural Rules
+
+❌ Never use:
+
+```tsx
+bg - white;
+p - 4;
+text - black;
+border - gray - 200;
+```
+
+✅ Always use:
+
+```tsx
+theme.*
+tokens.*
+```
+
+## 🔮 Next Improvements
+
+- Theme toggle
+- Typography tokens
+- Badge / Chip
+- Avatar
+- Modal / BottomSheet
+- Animation tokens
