@@ -7,7 +7,12 @@
 
 // libs
 import React from 'react';
-import { StatusBar, useColorScheme, StyleSheet, View } from 'react-native';
+import {
+  StatusBar,
+  useColorScheme,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import { Provider } from 'react-redux';
 
 // store
@@ -16,17 +21,19 @@ import store from './src/store/store';
 // components
 import DeclarativeEffectsComponent from './src/features/topics/declarativeEffects/DeclarativeEffectsComponent';
 import DispatchingActionsComponent from './src/features/topics/dispatchingActions/DispatchingActionsComponent';
+import EffectComponent from './src/features/topics/effect/EffectComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <Provider store={store}>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <DeclarativeEffectsComponent />
         <DispatchingActionsComponent />
-      </View>
+        <EffectComponent />
+      </ScrollView>
     </Provider>
   );
 }
