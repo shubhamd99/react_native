@@ -4,6 +4,7 @@ import dispatchingActionsReducer from '../features/topics/dispatchingActions/sli
 import effectReducer from '../features/topics/effect/slice';
 import errorHandlingReducer from '../features/topics/errorHandling/slice';
 import sagaHelpersReducer from '../features/topics/sagaHelpers/slice';
+import channelsReducer from '../features/topics/channels/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   effect: effectReducer,
   errorHandling: errorHandlingReducer,
   sagaHelpers: sagaHelpersReducer,
+  channels: channelsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
