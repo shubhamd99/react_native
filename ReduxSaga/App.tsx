@@ -12,6 +12,7 @@ import {
   useColorScheme,
   StyleSheet,
   ScrollView,
+  View,
 } from 'react-native';
 import { Provider } from 'react-redux';
 
@@ -22,18 +23,22 @@ import store from './src/store/store';
 import DeclarativeEffectsComponent from './src/features/topics/declarativeEffects/DeclarativeEffectsComponent';
 import DispatchingActionsComponent from './src/features/topics/dispatchingActions/DispatchingActionsComponent';
 import EffectComponent from './src/features/topics/effect/EffectComponent';
+import ErrorHandlingComponent from './src/features/topics/errorHandling/ErrorHandlingComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <Provider store={store}>
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <DeclarativeEffectsComponent />
-        <DispatchingActionsComponent />
-        <EffectComponent />
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <DeclarativeEffectsComponent />
+          <DispatchingActionsComponent />
+          <EffectComponent />
+          <ErrorHandlingComponent />
+        </ScrollView>
+      </View>
     </Provider>
   );
 }
@@ -41,6 +46,9 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 20,
   },
 });
 
