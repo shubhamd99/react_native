@@ -24,6 +24,7 @@ import DeclarativeEffectsComponent from './src/features/topics/declarativeEffect
 import DispatchingActionsComponent from './src/features/topics/dispatchingActions/DispatchingActionsComponent';
 import EffectComponent from './src/features/topics/effect/EffectComponent';
 import ErrorHandlingComponent from './src/features/topics/errorHandling/ErrorHandlingComponent';
+import SagaHelpersComponent from './src/features/topics/sagaHelpers/SagaHelpersComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -37,6 +38,7 @@ function App() {
           <DispatchingActionsComponent />
           <EffectComponent />
           <ErrorHandlingComponent />
+          <SagaHelpersComponent />
         </ScrollView>
       </View>
     </Provider>
