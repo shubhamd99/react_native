@@ -6,6 +6,7 @@ import { watchFetchData } from '../features/topics/errorHandling/saga';
 import { watchSagaHelpers } from '../features/topics/sagaHelpers/saga';
 import { channelsSaga } from '../features/topics/channels/sagas';
 import { watchComposingSagas } from '../features/topics/composingSagas/sagas';
+import { watchConcurrencySagas } from '../features/topics/concurrency/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     watchSagaHelpers(),
     channelsSaga(),
     watchComposingSagas(),
+    watchConcurrencySagas(),
   ]);
 }

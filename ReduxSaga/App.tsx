@@ -27,6 +27,7 @@ import ErrorHandlingComponent from './src/features/topics/errorHandling/ErrorHan
 import SagaHelpersComponent from './src/features/topics/sagaHelpers/SagaHelpersComponent';
 import ChannelsComponent from './src/features/topics/channels/ChannelsComponent';
 import ComposingSagasComponent from './src/features/topics/composingSagas/ComposingSagasComponent';
+import ConcurrencyComponent from './src/features/topics/concurrency/ConcurrencyComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,6 +44,7 @@ function App() {
           <SagaHelpersComponent />
           <ChannelsComponent />
           <ComposingSagasComponent />
+          <ConcurrencyComponent />
         </ScrollView>
       </View>
     </Provider>

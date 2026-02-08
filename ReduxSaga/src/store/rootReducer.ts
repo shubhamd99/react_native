@@ -6,6 +6,7 @@ import errorHandlingReducer from '../features/topics/errorHandling/slice';
 import sagaHelpersReducer from '../features/topics/sagaHelpers/slice';
 import channelsReducer from '../features/topics/channels/slice';
 import composingSagasReducer from '../features/topics/composingSagas/slice';
+import concurrencyReducer from '../features/topics/concurrency/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   sagaHelpers: sagaHelpersReducer,
   channels: channelsReducer,
   composingSagas: composingSagasReducer,
+  concurrency: concurrencyReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
