@@ -28,6 +28,7 @@ import SagaHelpersComponent from './src/features/topics/sagaHelpers/SagaHelpersC
 import ChannelsComponent from './src/features/topics/channels/ChannelsComponent';
 import ComposingSagasComponent from './src/features/topics/composingSagas/ComposingSagasComponent';
 import ConcurrencyComponent from './src/features/topics/concurrency/ConcurrencyComponent';
+import ForkModelComponent from './src/features/topics/forkModel/ForkModelComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -45,6 +46,7 @@ function App() {
           <ChannelsComponent />
           <ComposingSagasComponent />
           <ConcurrencyComponent />
+          <ForkModelComponent />
         </ScrollView>
       </View>
     </Provider>
