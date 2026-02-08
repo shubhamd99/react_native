@@ -11,6 +11,7 @@ import forkModelReducer from '../features/topics/forkModel/slice';
 import futureActionsReducer from '../features/topics/futureActions/slice';
 import nonBlockingCallsReducer from '../features/topics/nonBlockingCalls/slice';
 import racingEffectsReducer from '../features/topics/racingEffects/slice';
+import rootSagaPatternsReducer from '../features/topics/rootSagaPatterns/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   futureActions: futureActionsReducer,
   nonBlockingCalls: nonBlockingCallsReducer,
   racingEffects: racingEffectsReducer,
+  rootSagaPatterns: rootSagaPatternsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

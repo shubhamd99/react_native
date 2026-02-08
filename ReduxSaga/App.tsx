@@ -32,6 +32,7 @@ import ForkModelComponent from './src/features/topics/forkModel/ForkModelCompone
 import FutureActionsComponent from './src/features/topics/futureActions/FutureActionsComponent';
 import NonBlockingCallsComponent from './src/features/topics/nonBlockingCalls/NonBlockingCallsComponent';
 import RacingEffectsComponent from './src/features/topics/racingEffects/RacingEffectsComponent';
+import RootSagaPatternsComponent from './src/features/topics/rootSagaPatterns/RootSagaPatternsComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -53,6 +54,7 @@ function App() {
           <FutureActionsComponent />
           <NonBlockingCallsComponent />
           <RacingEffectsComponent />
+          <RootSagaPatternsComponent />
         </ScrollView>
       </View>
     </Provider>
