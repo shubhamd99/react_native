@@ -8,6 +8,7 @@ import channelsReducer from '../features/topics/channels/slice';
 import composingSagasReducer from '../features/topics/composingSagas/slice';
 import concurrencyReducer from '../features/topics/concurrency/slice';
 import forkModelReducer from '../features/topics/forkModel/slice';
+import futureActionsReducer from '../features/topics/futureActions/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   composingSagas: composingSagasReducer,
   concurrency: concurrencyReducer,
   forkModel: forkModelReducer,
+  futureActions: futureActionsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

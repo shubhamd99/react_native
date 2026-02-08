@@ -29,6 +29,7 @@ import ChannelsComponent from './src/features/topics/channels/ChannelsComponent'
 import ComposingSagasComponent from './src/features/topics/composingSagas/ComposingSagasComponent';
 import ConcurrencyComponent from './src/features/topics/concurrency/ConcurrencyComponent';
 import ForkModelComponent from './src/features/topics/forkModel/ForkModelComponent';
+import FutureActionsComponent from './src/features/topics/futureActions/FutureActionsComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -47,6 +48,7 @@ function App() {
           <ComposingSagasComponent />
           <ConcurrencyComponent />
           <ForkModelComponent />
+          <FutureActionsComponent />
         </ScrollView>
       </View>
     </Provider>

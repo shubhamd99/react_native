@@ -8,6 +8,7 @@ import { channelsSaga } from '../features/topics/channels/sagas';
 import { watchComposingSagas } from '../features/topics/composingSagas/sagas';
 import { watchConcurrencySagas } from '../features/topics/concurrency/sagas';
 import { watchForkModelSagas } from '../features/topics/forkModel/sagas';
+import { watchFutureActionsSagas } from '../features/topics/futureActions/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +21,6 @@ export default function* rootSaga() {
     watchComposingSagas(),
     watchConcurrencySagas(),
     watchForkModelSagas(),
+    watchFutureActionsSagas(),
   ]);
 }
