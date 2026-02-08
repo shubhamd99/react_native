@@ -35,6 +35,7 @@ import RacingEffectsComponent from './src/features/topics/racingEffects/RacingEf
 import RootSagaPatternsComponent from './src/features/topics/rootSagaPatterns/RootSagaPatternsComponent';
 import ParallelTasksComponent from './src/features/topics/parallelTasks/ParallelTasksComponent';
 import TaskCancellationComponent from './src/features/topics/taskCancellation/TaskCancellationComponent';
+import RecipesComponent from './src/features/topics/recipes/RecipesComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -59,6 +60,7 @@ function App() {
           <RootSagaPatternsComponent />
           <ParallelTasksComponent />
           <TaskCancellationComponent />
+          <RecipesComponent />
         </ScrollView>
       </View>
     </Provider>

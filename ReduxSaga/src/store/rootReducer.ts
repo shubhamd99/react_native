@@ -14,6 +14,7 @@ import racingEffectsReducer from '../features/topics/racingEffects/slice';
 import rootSagaPatternsReducer from '../features/topics/rootSagaPatterns/slice';
 import parallelTasksReducer from '../features/topics/parallelTasks/slice';
 import taskCancellationReducer from '../features/topics/taskCancellation/slice';
+import recipesReducer from '../features/topics/recipes/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   rootSagaPatterns: rootSagaPatternsReducer,
   parallelTasks: parallelTasksReducer,
   taskCancellation: taskCancellationReducer,
+  recipes: recipesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

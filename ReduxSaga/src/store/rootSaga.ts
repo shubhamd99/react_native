@@ -14,6 +14,7 @@ import { watchRacingEffectsSagas } from '../features/topics/racingEffects/sagas'
 import { watchRootSagaPatternsSagas } from '../features/topics/rootSagaPatterns/sagas';
 import { watchParallelTasksSagas } from '../features/topics/parallelTasks/sagas';
 import { watchTaskCancellationSagas } from '../features/topics/taskCancellation/sagas';
+import { watchRecipesSagas } from '../features/topics/recipes/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -32,5 +33,6 @@ export default function* rootSaga() {
     watchRootSagaPatternsSagas(),
     watchParallelTasksSagas(),
     watchTaskCancellationSagas(),
+    watchRecipesSagas(),
   ]);
 }
