@@ -33,6 +33,7 @@ import FutureActionsComponent from './src/features/topics/futureActions/FutureAc
 import NonBlockingCallsComponent from './src/features/topics/nonBlockingCalls/NonBlockingCallsComponent';
 import RacingEffectsComponent from './src/features/topics/racingEffects/RacingEffectsComponent';
 import RootSagaPatternsComponent from './src/features/topics/rootSagaPatterns/RootSagaPatternsComponent';
+import ParallelTasksComponent from './src/features/topics/parallelTasks/ParallelTasksComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -55,6 +56,7 @@ function App() {
           <NonBlockingCallsComponent />
           <RacingEffectsComponent />
           <RootSagaPatternsComponent />
+          <ParallelTasksComponent />
         </ScrollView>
       </View>
     </Provider>

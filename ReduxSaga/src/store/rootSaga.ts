@@ -12,6 +12,7 @@ import { watchFutureActionsSagas } from '../features/topics/futureActions/sagas'
 import { watchNonBlockingCallsSagas } from '../features/topics/nonBlockingCalls/sagas';
 import { watchRacingEffectsSagas } from '../features/topics/racingEffects/sagas';
 import { watchRootSagaPatternsSagas } from '../features/topics/rootSagaPatterns/sagas';
+import { watchParallelTasksSagas } from '../features/topics/parallelTasks/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -28,5 +29,6 @@ export default function* rootSaga() {
     watchNonBlockingCallsSagas(),
     watchRacingEffectsSagas(),
     watchRootSagaPatternsSagas(),
+    watchParallelTasksSagas(),
   ]);
 }

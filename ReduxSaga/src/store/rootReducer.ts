@@ -12,6 +12,7 @@ import futureActionsReducer from '../features/topics/futureActions/slice';
 import nonBlockingCallsReducer from '../features/topics/nonBlockingCalls/slice';
 import racingEffectsReducer from '../features/topics/racingEffects/slice';
 import rootSagaPatternsReducer from '../features/topics/rootSagaPatterns/slice';
+import parallelTasksReducer from '../features/topics/parallelTasks/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   nonBlockingCalls: nonBlockingCallsReducer,
   racingEffects: racingEffectsReducer,
   rootSagaPatterns: rootSagaPatternsReducer,
+  parallelTasks: parallelTasksReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
