@@ -1,97 +1,149 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# MMKV Documentation
 
-# Getting Started
+This project demonstrates the usage of `react-native-mmkv`, a high-performance key-value storage library for React Native.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Introduction
 
-## Step 1: Start Metro
+MMKV is an efficient, small, and easy-to-use mobile key-value storage framework developed by WeChat. `react-native-mmkv` is a library that allows you to use MMKV inside your React Native applications utilizing JSI (JavaScript Interface) for direct C++ bindings, making it significantly faster than AsyncStorage.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Installation
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+npm install react-native-mmkv
+# or
+yarn add react-native-mmkv
 ```
 
-## Step 2: Build and run your app
+## Basic Usage
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### Creating an Instance
 
-### Android
+You can create a storage instance using `createMMKV()`.
 
-```sh
-# Using npm
-npm run android
+```typescript
+import { createMMKV } from 'react-native-mmkv';
 
-# OR using Yarn
-yarn android
+export const storage = createMMKV();
 ```
 
-### iOS
+### Supported Data Types
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+MMKV supports the following data types:
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+- `string`
+- `number`
+- `boolean`
+- `Uint8Array` (Buffer)
+- `object` (via `JSON.stringify` / `JSON.parse` or `useMMKVObject`)
 
-```sh
-bundle install
+### Methods
+
+#### 1. Set Value
+
+```typescript
+storage.set('username', 'John Doe'); // String
+storage.set('age', 25); // Number
+storage.set('isViP', true); // Boolean
 ```
 
-Then, and every time you update your native dependencies, run:
+#### 2. Get Value
 
-```sh
-bundle exec pod install
+```typescript
+const username = storage.getString('username'); // 'John Doe' | undefined
+const age = storage.getNumber('age'); // 25 | undefined
+const isViP = storage.getBoolean('isViP'); // true | undefined
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+#### 3. Delete Value
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+```typescript
+storage.remove('username');
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+#### 4. Check Existence
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```typescript
+const hasKey = storage.contains('username');
+```
 
-## Step 3: Modify your app
+#### 5. Global Operations
 
-Now that you have successfully run the app, let's make changes!
+```typescript
+const allKeys = storage.getAllKeys(); // Returns an array of strings
+storage.clearAll(); // Deletes everything
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## Hooks
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+`react-native-mmkv` provides hooks for reactive updates in React components.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```typescript
+import {
+  useMMKVString,
+  useMMKVNumber,
+  useMMKVBoolean,
+  useMMKVObject,
+} from 'react-native-mmkv';
 
-## Congratulations! :tada:
+const [name, setName] = useMMKVString('user.name');
+const [age, setAge] = useMMKVNumber('user.age');
+const [isViP, setIsViP] = useMMKVBoolean('user.isViP');
+const [user, setUser] = useMMKVObject('user.obj');
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+## Advanced Features
 
-### Now what?
+### Safe/Secure Storage
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+You can create an encrypted instance by providing an encryption key.
 
-# Troubleshooting
+```typescript
+export const secureStorage = createMMKV({
+  id: 'secure-storage',
+  encryptionKey: 'my-secret-key',
+});
+```
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+### Buffer Support
 
-# Learn More
+You can store binary data using `Uint8Array`.
 
-To learn more about React Native, take a look at the following resources:
+```typescript
+const buffer = new Uint8Array([1, 2, 3]);
+storage.set('buffer', buffer.buffer);
+const retrieved = storage.getBuffer('buffer');
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### Listeners
+
+Listen to storage changes globally.
+
+```typescript
+const listener = storage.addOnValueChangedListener(key => {
+  console.log(`Key changed: ${key}`);
+});
+// Remove listener when done
+listener.remove();
+```
+
+### Recrypt
+
+Change the encryption key dynamically.
+
+```typescript
+storage.recrypt('new-key');
+```
+
+### Trim
+
+Optimize storage size by removing empty spaces.
+
+```typescript
+storage.trim();
+```
+
+## Project Structure
+
+- `src/utils/storage.ts`: MMKV instances configuration.
+- `src/components/`: Modular components for different operations (`BasicOperations`, `TypedOperations`, `AdvancedOperations`, `HooksDemo`).
+- `src/screens/MMKVDemo.tsx`: Main screen integrating all demos.
