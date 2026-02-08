@@ -31,6 +31,7 @@ import ConcurrencyComponent from './src/features/topics/concurrency/ConcurrencyC
 import ForkModelComponent from './src/features/topics/forkModel/ForkModelComponent';
 import FutureActionsComponent from './src/features/topics/futureActions/FutureActionsComponent';
 import NonBlockingCallsComponent from './src/features/topics/nonBlockingCalls/NonBlockingCallsComponent';
+import RacingEffectsComponent from './src/features/topics/racingEffects/RacingEffectsComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -51,6 +52,7 @@ function App() {
           <ForkModelComponent />
           <FutureActionsComponent />
           <NonBlockingCallsComponent />
+          <RacingEffectsComponent />
         </ScrollView>
       </View>
     </Provider>

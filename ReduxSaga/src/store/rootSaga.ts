@@ -10,6 +10,7 @@ import { watchConcurrencySagas } from '../features/topics/concurrency/sagas';
 import { watchForkModelSagas } from '../features/topics/forkModel/sagas';
 import { watchFutureActionsSagas } from '../features/topics/futureActions/sagas';
 import { watchNonBlockingCallsSagas } from '../features/topics/nonBlockingCalls/sagas';
+import { watchRacingEffectsSagas } from '../features/topics/racingEffects/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga() {
     watchForkModelSagas(),
     watchFutureActionsSagas(),
     watchNonBlockingCallsSagas(),
+    watchRacingEffectsSagas(),
   ]);
 }

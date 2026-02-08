@@ -10,6 +10,7 @@ import concurrencyReducer from '../features/topics/concurrency/slice';
 import forkModelReducer from '../features/topics/forkModel/slice';
 import futureActionsReducer from '../features/topics/futureActions/slice';
 import nonBlockingCallsReducer from '../features/topics/nonBlockingCalls/slice';
+import racingEffectsReducer from '../features/topics/racingEffects/slice';
 
 const rootReducer = combineReducers({
   declarativeEffects: declarativeEffectsReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   forkModel: forkModelReducer,
   futureActions: futureActionsReducer,
   nonBlockingCalls: nonBlockingCallsReducer,
+  racingEffects: racingEffectsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
