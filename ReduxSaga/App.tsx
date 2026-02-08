@@ -26,6 +26,7 @@ import EffectComponent from './src/features/topics/effect/EffectComponent';
 import ErrorHandlingComponent from './src/features/topics/errorHandling/ErrorHandlingComponent';
 import SagaHelpersComponent from './src/features/topics/sagaHelpers/SagaHelpersComponent';
 import ChannelsComponent from './src/features/topics/channels/ChannelsComponent';
+import ComposingSagasComponent from './src/features/topics/composingSagas/ComposingSagasComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -41,6 +42,7 @@ function App() {
           <ErrorHandlingComponent />
           <SagaHelpersComponent />
           <ChannelsComponent />
+          <ComposingSagasComponent />
         </ScrollView>
       </View>
     </Provider>

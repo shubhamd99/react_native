@@ -5,6 +5,7 @@ import { watchInspectEffects } from '../features/topics/effect/saga';
 import { watchFetchData } from '../features/topics/errorHandling/saga';
 import { watchSagaHelpers } from '../features/topics/sagaHelpers/saga';
 import { channelsSaga } from '../features/topics/channels/sagas';
+import { watchComposingSagas } from '../features/topics/composingSagas/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     watchFetchData(),
     watchSagaHelpers(),
     channelsSaga(),
+    watchComposingSagas(),
   ]);
 }
