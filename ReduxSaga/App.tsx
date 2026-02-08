@@ -30,6 +30,7 @@ import ComposingSagasComponent from './src/features/topics/composingSagas/Compos
 import ConcurrencyComponent from './src/features/topics/concurrency/ConcurrencyComponent';
 import ForkModelComponent from './src/features/topics/forkModel/ForkModelComponent';
 import FutureActionsComponent from './src/features/topics/futureActions/FutureActionsComponent';
+import NonBlockingCallsComponent from './src/features/topics/nonBlockingCalls/NonBlockingCallsComponent';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -49,6 +50,7 @@ function App() {
           <ConcurrencyComponent />
           <ForkModelComponent />
           <FutureActionsComponent />
+          <NonBlockingCallsComponent />
         </ScrollView>
       </View>
     </Provider>
