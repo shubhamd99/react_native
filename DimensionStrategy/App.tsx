@@ -1,44 +1,73 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
 import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
-function App() {
+import ResponsiveBox from './src/components/ResponsiveBox';
+import ResponsiveText from './src/components/ResponsiveText';
+import ComplexResponsiveLayout from './src/components/ComplexResponsiveLayout';
+
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
+    <View>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={styles.scrollContainer}
+      >
+        <View style={styles.headerContainer}>
+          <Text
+            style={[
+              styles.headerText,
+              isDarkMode ? styles.whiteText : styles.blackText,
+            ]}
+          >
+            Dimension Strategy Demo
+          </Text>
+        </View>
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
+        <View
+          style={isDarkMode ? styles.blackBackground : styles.whiteBackground}
+        >
+          <ResponsiveBox />
+          <ResponsiveText />
+          <ComplexResponsiveLayout />
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    paddingBottom: 40,
+  },
+  headerContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  whiteText: {
+    color: 'white',
+  },
+  blackText: {
+    color: 'black',
+  },
+  whiteBackground: {
+    backgroundColor: 'white',
+  },
+  blackBackground: {
+    backgroundColor: 'black',
   },
 });
 

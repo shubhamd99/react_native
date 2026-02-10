@@ -1,97 +1,142 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Dimension Strategy Project
 
-# Getting Started
+This project demonstrates a strategy for handling responsive dimensions in React Native apps, including scaling for different screen sizes and pixel densities.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- **Horizontal Scaling**: Scales dimensions based on screen width.
+- **Vertical Scaling**: Scales dimensions based on screen height.
+- **Moderate Scaling**: Scales dimensions with a moderation factor (useful for padding/margin).
+- **Font Normalization**: Scales font sizes based on pixel density and screen width.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Usage
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+The core logic is located in `src/utils/responsive.ts`.
 
-```sh
-# Using npm
-npm start
+### Importing
 
-# OR using Yarn
-yarn start
+```typescript
+import {
+  horizontalScale,
+  verticalScale,
+  moderateScale,
+  normalize,
+} from './src/utils/responsive';
 ```
 
-## Step 2: Build and run your app
+### Examples
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+#### Scaling Width and Margin
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```typescript
+const styles = StyleSheet.create({
+  container: {
+    width: horizontalScale(300), // Scales based on width
+    marginHorizontal: horizontalScale(20),
+  },
+});
 ```
 
-### iOS
+#### Scaling Height and Vertical Padding
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```typescript
+const styles = StyleSheet.create({
+  box: {
+    height: verticalScale(200), // Scales based on height
+    paddingVertical: verticalScale(10),
+  },
+});
 ```
 
-Then, and every time you update your native dependencies, run:
+#### Moderate Scaling (Padding/Margin)
 
-```sh
-bundle exec pod install
+Use `moderateScale` when you want some scaling but don't want it to be linear with the screen size (e.g., to prevent elements from becoming too large on tablets or too small on small phones).
+
+```typescript
+const styles = StyleSheet.create({
+  button: {
+    padding: moderateScale(15),
+    borderRadius: moderateScale(8),
+  },
+});
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+#### Font Normalization
 
-```sh
-# Using npm
-npm run ios
+Use `normalize` for font sizes to ensure readability across devices.
 
-# OR using Yarn
-yarn ios
+```typescript
+const styles = StyleSheet.create({
+  text: {
+    fontSize: normalize(16),
+  },
+});
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+#### Tablet Support
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+You can checking if the device is a tablet using `isTablet()` or `isTabletDevice`.
 
-## Step 3: Modify your app
+```typescript
+import { isTabletDevice } from './src/utils/responsive';
 
-Now that you have successfully run the app, let's make changes!
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: isTabletDevice ? 'row' : 'column',
+  },
+});
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+Check out `src/components/ComplexResponsiveLayout.tsx` for a complete example of a grid layout that adapts columns based on the device type.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+#### Hairline Width
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+For borders that should be as thin as possible (1 physical pixel), use `StyleSheet.hairlineWidth`.
 
-## Congratulations! :tada:
+```typescript
+const styles = StyleSheet.create({
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#cccccc',
+  },
+});
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+This ensures the line is crisp on all devices, regardless of pixel density.
 
-### Now what?
+#### Aspect Ratio
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+Use `aspectRatio` to maintain specific proportions (e.g., for images or video containers) regardless of the screen size.
 
-# Troubleshooting
+```typescript
+const styles = StyleSheet.create({
+  video: {
+    width: '100%',
+    aspectRatio: 16 / 9, // Height will be calculated automatically
+  },
+});
+```
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## Running the Demo
 
-# Learn More
+1.  Install dependencies:
 
-To learn more about React Native, take a look at the following resources:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+2.  Run the app:
+    ```bash
+    npm run android
+    # or
+    npm run ios
+    ```
+
+## Project Structure
+
+- `src/utils/responsive.ts`: Contains the improved scaling functions.
+- `src/components/ResponsiveBox.tsx`: Demo component for box dimensions.
+- `src/components/ResponsiveText.tsx`: Demo component for text sizing.
+- `App.tsx`: Main entry point displaying the demo components.
