@@ -35,6 +35,15 @@
     "react-test-renderer": "19.2.3",
     "typescript": "^5.8.3"
   },
+  "codegenConfig": {
+    "name": "NativeAnalyticsSpec",
+    "type": "modules",
+    "jsSrcsDir": "src/specs",
+    "android": {
+      "javaPackageName": "com.analytics",
+      "useKotlin": true
+    }
+  },
   "engines": {
     "node": ">= 22.11.0"
   }
