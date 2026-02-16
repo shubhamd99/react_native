@@ -22,6 +22,7 @@ class AnalyticsRepository @Inject constructor(
     private val mutex = Mutex()
     
     // Rename to explicitly indicate this controls the DELAY, not the WORK
+    // Guarded by mutex
     private var flushTimerJob: Job? = null
     
     private val BATCH_SIZE = 10
@@ -30,8 +31,10 @@ class AnalyticsRepository @Inject constructor(
     private val MAX_BACKOFF_MS = 60000L
     private val INITIAL_BACKOFF_MS = 1000L
     
+    // Guarded by mutex
     private var retryCount = 0
-    // AtomicLong allows checking timestamp safely without locking mutex
+    // AtomicLong allows checking timestamp safely without locking mutex for quick checks,
+    // but modifications should generally be guarded if coordinated with retryCount.
     private val nextAvailableFlushTime = AtomicLong(0L)
 
     suspend fun getQueueSize(): Int = mutex.withLock { queue.size }
@@ -46,20 +49,25 @@ class AnalyticsRepository @Inject constructor(
                 queue.addLast(event)
                 Log.d("AnalyticsRepo", "Added. Size: ${queue.size}")
                 
-                queue.size >= BATCH_SIZE
+                if (queue.size >= BATCH_SIZE) {
+                    // Cancel any pending timer since we are flushing NOW
+                    flushTimerJob?.cancel()
+                    flushTimerJob = null
+                    true // trigger flush
+                } else {
+                    ensureFlushTimer()
+                    false // do not trigger flush yet
+                }
             }
             
             // Logic regarding flushing happens safely outside the lock
             if (shouldFlush) {
-                // Cancel any pending timer since we are flushing NOW
-                flushTimerJob?.cancel()
                 triggerFlush()
-            } else {
-                ensureFlushTimer()
             }
         }
     }
 
+    // Must be called under mutex lock
     private fun ensureFlushTimer() {
         if (flushTimerJob?.isActive == true) return
         
@@ -78,7 +86,8 @@ class AnalyticsRepository @Inject constructor(
     }
 
     private suspend fun flushEvents() {
-        // 1. Check Backoff
+        // 1. Check Backoff (Fast check optimization, but strict check inside lock if needed? 
+        // actually AtomicLong is enough for the "don't flush if too early" check).
         val currentTime = System.currentTimeMillis()
         val nextTime = nextAvailableFlushTime.get()
         
@@ -86,9 +95,10 @@ class AnalyticsRepository @Inject constructor(
             val waitMs = nextTime - currentTime
             Log.d("AnalyticsRepo", "Backoff active. Waiting ${waitMs}ms")
             
-            // FIX: "Silent Death" bug. 
-            // If we can't flush now, we MUST schedule the timer to try again later.
-            ensureFlushTimer()
+            mutex.withLock {
+                // If we can't flush now, we MUST schedule the timer to try again later.
+                ensureFlushTimer()
+            }
             return
         }
 
@@ -112,11 +122,18 @@ class AnalyticsRepository @Inject constructor(
             
             if (response.isSuccessful) {
                 Log.d("AnalyticsRepo", "Success")
-                resetBackoff()
-                // Check if more items remain (Recursive flush)
-                mutex.withLock { 
-                    if (queue.isNotEmpty()) triggerFlush() 
+                
+                // 3. Success handling (reset backoff, recursive flush check)
+                val shouldRecursiveFlush = mutex.withLock {
+                    resetBackoff()
+                    // Check if more items remain (Recursive flush)
+                    queue.isNotEmpty()
                 }
+                
+                if (shouldRecursiveFlush) {
+                    triggerFlush()
+                }
+                
             } else {
                 Log.e("AnalyticsRepo", "Failed: ${response.code()}")
                 handleFailure(batchEvents)
@@ -144,6 +161,7 @@ class AnalyticsRepository @Inject constructor(
         }
     }
 
+    // Must be called under mutex lock
     private fun resetBackoff() {
         retryCount = 0
         nextAvailableFlushTime.set(0L)
