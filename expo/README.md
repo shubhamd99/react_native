@@ -38,12 +38,12 @@ Below are the core screens demonstrating the Expo SDK features.
 
 | Home Screen | Camera API |
 |:---:|:---:|
-| ![Home Screen](./preview/home.png) | ![Camera](./preview/camera.png) |
+| ![Home Screen](./preview/01.png) | ![Camera](./preview/02.png) |
 | **Persistence & Haptics** | **Native Capture** |
 
 | SQLite & Storage | Settings |
 |:---:|:---:|
-| ![Database](./preview/database.png) | ![Settings](./preview/settings.png) |
+| ![Database](./preview/03.png) | ![Settings](./preview/04.png) |
 | **Relational Data** | **Notifications & Env** |
 
 ---
