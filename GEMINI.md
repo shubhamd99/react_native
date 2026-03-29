@@ -30,20 +30,31 @@ A curated collection of independent React Native projects, architectural pattern
 ### TypeScript
 - **TypeScript only** — no plain `.js` files in source.
 - Use `interface` for object shapes, `type` for unions/aliases.
-- No `any` types — use proper generics or `unknown`.
+- **Strict Typing Mandate:**
+  - **NO `any` types.** The use of `any` is strictly forbidden.
+  - Use proper **generics** or `unknown` for dynamic values.
+  - If a library has strict constraint issues (like Nitro), resolve them using architectural patterns (e.g., proper inheritance) rather than type casting to `any`.
 - Prefer explicit return types on all exported functions and components.
 
 ### Components
 - **Functional components only** — no class components.
 - **Pattern:** Prefer **Compound Component Pattern** for highly interactive or customizable UI elements.
-- Use `React.FC<Props>` or explicit prop typing.
-- Keep components in their own files; no multi-component files.
-- Prefer named exports over default exports.
+- **Modular Pattern Mandate:**
+  - **Hooks for Logic:** All business logic, state management, and side effects MUST be placed in custom hooks (e.g., `useMyFeature.ts`).
+  - **Small Components:** Large screens MUST be broken down into small, focused sub-components (placed in a `components/` directory).
+  - **Prop Typing:** Use `React.FC<Props>` or explicit prop typing.
+  - **No Monolithic Files:** Keep components in their own files; no multi-component files.
+  - Prefer named exports over default exports.
 
 ### Styling
 - **Separate Files:** Always write styles in separate files (e.g., `ComponentName.styles.ts`). Never include styles in the same file as the component logic.
 - Use `StyleSheet.create()` by default. No inline style objects in JSX.
 - `NativeWindDLS` project uses Tailwind class strings — no `StyleSheet` there.
+
+### Safe Areas
+- **SafeAreaView Mandate:** ALWAYS use `SafeAreaView` from `react-native-safe-area-context`.
+- **FORBIDDEN:** NEVER use the built-in `SafeAreaView` from `react-native` as it is deprecated and inconsistent across platforms.
+- Wrap the root of the app in `SafeAreaProvider`.
 
 ### Lists & Performance
 - **FlashList Mandate:** Always use `@shopify/flash-list`. **Do not use FlatList.**
