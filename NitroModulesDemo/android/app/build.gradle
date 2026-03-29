@@ -2,6 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+apply from: "../../nitrogen/generated/android/NitroModulesDemo+autolinking.gradle"
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -87,10 +89,18 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++20" // Change from c++17 to c++20
+                cppFlags "-std=c++20", "-fexceptions", "-frtti"
+                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON", "-DANDROID_STL=c++_shared", "-DCMAKE_ANDROID_STL_TYPE=c++_shared"
             }
         }
     }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/jni/CMakeLists.txt"
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -111,11 +121,18 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation project(':react-native-nitro-modules')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

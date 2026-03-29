@@ -1,0 +1,28 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["com", "nitromodulesdemo"],
+  "ios": {
+    "iosModuleName": "NitroModulesDemo"
+  },
+  "android": {
+    "androidNamespace": ["nitromodulesdemo"],
+    "androidCxxLibName": "NitroModulesDemo"
+  },
+  "autolinking": {
+    "MathModule": {
+      "ios": { "language": "swift", "implementationClassName": "MathModule" },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "MathModule"
+      }
+    },
+    "UserModule": {
+      "ios": { "language": "swift", "implementationClassName": "UserModule" },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "UserModule"
+      }
+    }
+  },
+  "ignorePaths": ["**/node_modules"]
+}

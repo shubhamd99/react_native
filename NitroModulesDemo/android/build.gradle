@@ -4,7 +4,7 @@ buildscript {
         minSdkVersion = 24
         compileSdkVersion = 36
         targetSdkVersion = 36
-        ndkVersion = "26.1.10909125"
+        ndkVersion = "27.0.12077973"
         kotlinVersion = "2.1.20"
     }
     repositories {
@@ -19,3 +19,32 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    def configureProject = { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (project.android.hasProperty('defaultConfig')) {
+                    defaultConfig {
+                        externalNativeBuild {
+                            cmake {
+                                // Use property-based access to avoid method errors in newer AGP
+                                if (delegate.hasProperty('arguments')) {
+                                    arguments += ["-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON", "-DCMAKE_SHARED_LINKER_FLAGS=-lc++_shared"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (project.state.executed) {
+        configureProject(project)
+    } else {
+        project.afterEvaluate {
+            configureProject(it)
+        }
+    }
+}
