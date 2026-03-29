@@ -347,11 +347,17 @@ The Codegen is invoked automatically by React Native every time an iOS or Androi
 
 Nitro Modules represent the next evolution of native modules in React Native, following TurboModules. They aim to provide even faster communication between JavaScript and Native code by minimizing the overhead of the JSI/TurboModule layer. Nitro Modules focus on:
 
-- **Extreme Performance:** Leveraging C++ more deeply to reduce bridge/JSI boundary costs.
-- **Type Safety:** Stronger type guarantees between JS and Native codebases.
-- **Modern Tooling:** Simplified development workflow and better developer experience compared to traditional TurboModules.
+- **Extreme Performance:** Leveraging C++ more deeply to reduce bridge/JSI boundary costs with zero-overhead JSI calls.
+- **Type Safety:** Stronger type guarantees between JS and Native codebases using **Nitrogen** codegen from TypeScript specs.
+- **Modern Languages:** First-class support for **Swift 5.9+** and **Kotlin**, enabling modern native development patterns.
+- **Complex Data Support:** Seamless, high-performance conversion of complex Objects, Arrays, and Enums without serialization.
 
-Explore the `NitroModulesDemo` directory for a hands-on example of this technology.
+Explore the `NitroModulesDemo` directory for a hands-on example. It demonstrates:
+- **Modular Architecture**: Using custom hooks for logic and small components for UI.
+- **Strict Typing**: A 100% type-safe implementation without using `any`.
+- **Hybrid Objects**: Synchronous and asynchronous native method calls using the latest Nitro APIs.
+
+For setup and implementation details, see the [NitroModulesDemo README](./NitroModulesDemo/README.md).
 
 ## AsyncTask
 
