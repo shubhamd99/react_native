@@ -1,12 +1,61 @@
 # React Native
 
 ```
-npx react-native@latest init AwesomeProject
+npx @react-native-community/cli init AwesomeProject
 ```
 
 React Native is a JavaScript framework for writing real, natively rendering mobile applications for iOS and Android. It’s based on React, Facebook’s JavaScript library for building user interfaces, but instead of targeting the browser, it targets mobile platforms. In other words: web developers can now write mobile applications that look and feel truly “native,” all from the comfort of a JavaScript library that we already know and love. Plus, because most of the code you write can be shared between platforms, React Native makes it easy to simultaneously develop for both Android and iOS.
 
 Similar to React for the Web, React Native applications are written using a mixture of JavaScript and XML-esque markup, known as JSX. Then, under the hood, the React Native “bridge” invokes the native rendering APIs in Objective-C (for iOS) or Java (for Android). Thus, your application will render using real mobile UI components, not webviews, and will look and feel like any other mobile application. React Native also exposes JavaScript interfaces for platform APIs, so your React Native apps can access platform features like the phone camera, or the user’s location.
+
+## Repository Structure
+
+This repository is a curated collection of React Native projects, architectural patterns, and performance-optimized modules. It serves as both a learning resource and a production-ready reference for advanced React Native development.
+
+For detailed AI interaction guidelines and repository standards, please refer to [GEMINI.md](./GEMINI.md).
+
+The repository consists of multiple independent React Native projects and modules:
+
+- **Core Architecture:**
+  - `mvvm_example`: Reference implementation of MVVM (to be used as reference only).
+  - `ReduxSaga`: State management using Redux and Saga.
+  - `mono_repo_yarn`: Monorepo setup using Yarn Workspaces.
+  - `AbsoluteImports`: Configuring and using absolute imports in React Native.
+  - `Storybook`: UI component isolation and testing with Storybook.
+
+- **Performance & Native (New Architecture):**
+  - `analytics`: High-performance TurboModule implementation for analytics.
+  - `mmkv`: Lightning-fast key-value storage using JSI.
+  - `watermelon_db_jsi`: High-performance database using JSI.
+  - `NativeModuleWithKotlin`: Example of creating native modules with Kotlin.
+  - `TurboDemo`: Demonstration of TurboModules and Codegen.
+  - `NitroModulesDemo`: Exploring the next generation of native modules (Nitro).
+  - `RootDetection`: Native implementation for detecting rooted/jailbroken devices.
+  - `react-native-background-timer-workmanager`: Reliable background tasks using WorkManager on Android.
+
+- **UI & Animations:**
+  - `animated_flatlist`: Performance-optimized list animations.
+  - `AnimatedInput`: Custom animated input components.
+  - `bottomsheet_gesturehandler`: Interactive bottom sheets using `react-native-gesture-handler`.
+  - `carousel`: High-performance carousel implementation.
+  - `lottieAndRive`: Integration and comparison of Lottie and Rive animations.
+  - `drag_reactangle_reanimated`: Interactive drag-and-drop features using Reanimated.
+  - `interpolate_scrollview_reanimated`: Complex scroll-based animations.
+  - `NativeWindDLS`: Design Language System implemented with NativeWind (Tailwind CSS for React Native).
+  - `DimensionStrategy`: Strategies for handling different screen dimensions and layouts.
+  - `keybooardController`: Advanced keyboard handling and animations.
+
+- **Specialized Widgets & Features:**
+  - `otpWidget`: Custom OTP input widget.
+  - `QrAndBarcodeScanner`: High-performance QR and barcode scanning.
+  - `widgetApp`: Implementing home screen widgets for Android and iOS.
+  - `mypodcast`: A full-featured podcast app example.
+  - `suspense_and_freeze`: Implementing React Suspense and React Freeze for better UX.
+  - `expo`: Comprehensive examples and utilities built with the Expo ecosystem.
+
+- **Advanced Networking & Storage:**
+  - `grpc_react_native`: Implementing gRPC for efficient client-server communication.
+  - `turbo-secure-storage`: Secure storage implementation using the New Architecture.
 
 ## React vs React Native
 
@@ -29,23 +78,24 @@ To put it very simply, React Native is an improved version of React, even though
 
 The Flexible Box Layout Module, makes it easier to design flexible responsive layout structure without using float or positioning. COnsistent screensizes across different devices and view ports.
 
-## React Native Threading Model (Old)
+## React Native Threading Model (New Architecture)
 
-- UI Thread - This is also known as the main thread. The UI thread is used for native android or iOS UI rendering.
-  This is the main thread that executes synchronous operations. This is also called a UI thread because it is at the end of all of our component hierarchy. This thread carried out data from Shadow Thread. For example, in android, this thread is used for handles android measure/layout/draw events.
+The New Architecture (introduced in RN 0.68+) moves away from the three-thread model (UI, JS, Shadow) separated by an asynchronous bridge, towards a more integrated approach using JSI.
 
-- JS Thread - JavaScript thread executes React and JavaScript code logic in our app. This thread carried out all DOM hierarchy operations that are straight from the code written by the developers. Once the hierarchy of code is executed, it is sent to the Native module Thread for optimizations and further operations.
+- **Main Thread (UI Thread):** Handles user interactions and native UI rendering (Android/iOS). In the New Architecture, it can now interact with the JS thread synchronously.
+- **JS Thread:** Executes JavaScript code (Hermes). It can now call native functions directly via JSI host objects.
+- **Background Thread:** Handles layout (Yoga) and other background tasks. The "Shadow Thread" concept is now integrated into the New Architecture's background processing.
 
-- Render Thread - This thread is only used by Android L (5.0) to draw the UI with OpenGL. This is only used in specific situations, therefore it cannot be included in the main thread. It is fully optional.
+### Bridgeless Mode
 
-Issues in React Native Threads: If you understand the life cycle of these three threads in React Native (JS Thread, UI Thread, and React Native Modules Thread), you have an idea about why you experience performance issues in React Native.
+Bridgeless Mode is the next step in React Native's evolution (default in 0.74+). It removes the legacy Bridge entirely, allowing all native-to-JS communication to happen through JSI. This eliminates the serialization/deserialization overhead and enables synchronous execution by default.
 
-## The issues using threads
+## The issues with the Legacy Bridge
 
-- Animations blocking in the JS Thread.
-- Because of timeouts or animations, there are slow navigation transitions occur.
-- A large amount of space is occupied by DOM.
-- Stuttering during a components mounting logic.
+Legacy React Native relied on an asynchronous bridge which caused:
+- **Asynchronous Bottlenecks:** Animations and gestures could feel laggy if the JS thread was busy.
+- **Serialization Overhead:** Every message had to be converted to JSON, sent over the bridge, and parsed back.
+- **Initialization Cost:** All native modules had to be initialized at startup, even if not used.
 
 ## Worklets
 
@@ -80,11 +130,17 @@ The code that’s now running within this JavaScript VM thread will communicate 
 
 Unlike a fully native application, a React Native app contains a Javascript bundle that needs to be loaded into memory. Then it is parsed and executed by the Javascript VM. The overall size of the Javascript code is an important factor. While that happens, the application remains in the loading state. We often describe this process as TTI - Time to Interactive. It is a time expressed in the milliseconds between when the icon gets selected from the application drawer and when it becomes fully interactive.
 
-### JavaScript Core (Replaced with Hermes in New React Native)
+### Hermes & Static Hermes (Latest)
 
-JavaScriptCore is a framework that allows JavaScript code to be run on mobile devices, for instance. On iOS devices, this framework is directly provided by the OS. Android devices don’t have the framework, so React Native bundles it along with the app itself. This increases the app size just a little bit, but it’ll barely matter in the end.
+Hermes is an open-source JavaScript engine optimized for React Native. Since React Native 0.70, Hermes is the default engine.
 
-JavaScriptCore is used for running JS code when the app is run on a device. However, if you choose to debug your app, the JS code is going to run inside Chrome. Chrome uses the V8 engine and uses WebSockets for communicating with the native code, so you’ll be able to see important info such as properly formatted logs and what network requests are being made. Just remember that there are differences between the V8 engine and JavaScriptCore — they are different environments
+- **AOT Compilation:** Hermes uses Ahead-of-Time compilation, meaning the JS bundle is compiled to bytecode during the build process. This significantly improves TTI (Time to Interactive).
+- **Static Hermes:** The latest evolution where Hermes can perform static analysis to further optimize performance, potentially bringing JS execution speeds closer to native code by using typed information.
+- **Memory Efficiency:** Hermes is designed to have a low memory footprint, which is critical for budget Android devices.
+
+### JavaScript Core (Legacy)
+
+JavaScriptCore was the original engine used by React Native. While it's still available, it lacks the AOT optimizations of Hermes and generally results in larger bundle sizes and slower startup times. On iOS, it uses the system-provided JSC, while on Android, it had to be bundled with the app.
 
 ## Tree Shaking
 
@@ -173,26 +229,18 @@ Despite being feature-rich and more performant, FlatList has its shortcomings. T
 
 In the end, lots of objects have to be garbage collected. If the user scrolls through the whole list, FlatList creates as many views as items in the list — creating and destroying views as the user scrolls.
 
-## Flipper
+## Modern Debugging Tools (Latest)
 
-Flipper is a highly extensible mobile app debugger used to debug iOS, Android and React Native applications. It lets you inspect, control, and visualize your application from its desktop application.
+Meta has deprecated Flipper in favor of a more streamlined, Chrome DevTools-based debugging experience starting from React Native 0.73.
 
-It contains a long list of must-have debugging tools like log viewer, interactive layout inspector, and network inspector. It can be used as it is provided or you can extend it using the plugin API. It helps you debug apps running in an emulator/simulator or connected physical development devices.
+- **Chrome DevTools:** The primary tool for debugging JavaScript code, inspecting network requests, and profiling performance.
+- **React DevTools:** Integrated into the new debugging flow for inspecting component hierarchies and state.
+- **Native Debugging:** Standard tools like Android Studio (Logcat) and Xcode (Console) remain essential for native-side debugging.
 
-Flipper for React Native is shipped with React DevTools, Hermes debugger and Metro bundler integration. You can use Flipper for tasks such as detecting memory leaks, previewing the content of Shared Preferences or inspecting loaded images.
+## R8 & Proguard
 
-### Find and Remove unused dependencies
-
-Every bit of native code we use in our apps has a runtime cost associated with reading, loading and executing said code. The more native dependencies our apps have, the slower it is for apps to start.
-
-```
-npx depcheck
-```
-
-## Proguard
-
-Proguard is a great tool for creating a production-ready application in Android. It assists us in reducing code and making apps faster.
-To make your app as small as possible, you should enable shrinking in your release build to remove unused code and resources. When enabling shrinking, you also benefit from obfuscation, which shortens the names of your app’s classes and members, and optimization, which applies more aggressive strategies to further reduce the size of your app.
+R8 is the default tool that converts your app's Java bytecode into the DEX format that runs on the Android platform. It replaced Proguard and provides better shrinking, obfuscation, and optimization.
+To make your app as small as possible, you should enable shrinking in your release build to remove unused code and resources. R8 also benefits from obfuscation, which shortens the names of your app’s classes and members, further reducing the size and providing basic protection against reverse engineering.
 
 ## React Native JSI
 
@@ -294,6 +342,16 @@ The React Native team is also doubling down on the presence of a static type che
 The Codegen is not a proper pillar, but it is a tool that can be used to avoid writing a lot of repetitive code. Using Codegen is not mandatory: all the code that is generated by it can also be written manually. However, it generates scaffolding code that could save you a lot of time.
 
 The Codegen is invoked automatically by React Native every time an iOS or Android app is built.
+
+## Nitro Modules
+
+Nitro Modules represent the next evolution of native modules in React Native, following TurboModules. They aim to provide even faster communication between JavaScript and Native code by minimizing the overhead of the JSI/TurboModule layer. Nitro Modules focus on:
+
+- **Extreme Performance:** Leveraging C++ more deeply to reduce bridge/JSI boundary costs.
+- **Type Safety:** Stronger type guarantees between JS and Native codebases.
+- **Modern Tooling:** Simplified development workflow and better developer experience compared to traditional TurboModules.
+
+Explore the `NitroModulesDemo` directory for a hands-on example of this technology.
 
 ## AsyncTask
 
@@ -535,7 +593,7 @@ const userData = {
 await SharedGroupPreferences.setItem("savedData", data, appGroupIdentifier);
 const loadedData = await SharedGroupPreferences.getItem(
   "savedData",
-  appGroupIdentifier
+  appGroupIdentifier,
 );
 ```
 
@@ -547,9 +605,8 @@ const loadedData = await SharedGroupPreferences.getItem(
 // This Android only script lets you check if another app is installed based on package name. The example below is for Facebook.
 const facebookPackageName = "com.facebook.android";
 try {
-  const installed = await SharedGroupPreferences.isAppInstalledAndroid(
-    facebookPackageName
-  );
+  const installed =
+    await SharedGroupPreferences.isAppInstalledAndroid(facebookPackageName);
   console.log("Facebook is installed on this device");
 } catch (err) {
   console.log("Facebook is not installed");
