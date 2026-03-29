@@ -124,7 +124,13 @@ android {
 
     packaging {
         jniLibs {
-            useLegacyPackaging = false
+            useLegacyPackaging = true
+        }
+        resources {
+            excludes += '/META-INF/**'
+            pickFirsts += '**/libreact_featureflagsjni.so'
+            pickFirsts += '**/libc++_shared.so'
+            pickFirsts += '**/libfbjni.so'
         }
     }
 }

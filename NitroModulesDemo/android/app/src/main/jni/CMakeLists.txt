@@ -25,8 +25,3 @@ target_link_options(
         "-Wl,-z,max-page-size=16384"
 )
 
-# Explicitly link the C++ standard library to resolve undefined symbol errors with NDK r27.
-target_link_libraries(
-        NitroModulesDemo
-        c++
-)

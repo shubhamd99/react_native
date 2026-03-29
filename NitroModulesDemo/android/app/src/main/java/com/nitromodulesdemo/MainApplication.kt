@@ -36,9 +36,7 @@ class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     SoLoader.init(this, false)
-    if (true) {
-      load(bridgelessEnabled = true)
-    }
+    load()
     NitroModulesDemoOnLoad.initializeNative()
   }
 }
