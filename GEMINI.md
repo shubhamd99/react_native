@@ -31,6 +31,18 @@ A curated collection of independent React Native projects, architectural pattern
 - **Styling:** Vanilla CSS, NativeWind (in `NativeWindDLS`).
 - **Animation & Gestures:** **Mandatory** use of `react-native-reanimated` and `react-native-gesture-handler`.
 
+## Environment & Pre-installed Tools
+
+The following core Ubuntu packages are pre-installed in this environment. Use these CLI tools whenever possible for faster and more efficient operations:
+
+- **Poppler-utils:** (`pdftotext`, etc.) For PDF text extraction.
+- **Pandoc:** For advanced document format conversion.
+- **ImageMagick:** For image manipulation and preprocessing.
+- **Tesseract OCR:** (`tesseract-ocr`, `tesseract-ocr-eng`) For reading text from images and scanned PDFs.
+- **LibreOffice:** For converting Word/Excel files to PDF or CSV via CLI.
+- **jq:** For high-performance JSON parsing and manipulation.
+- **yq:** (mikefarah/yq) The industry-standard YAML/XML/CSV/Properties processor.
+
 ## Coding Style
 
 ### TypeScript
