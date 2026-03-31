@@ -1,97 +1,93 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Infinite Scroll FlashList
 
-# Getting Started
+![Preview](./preview/preview.png)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+A high-performance, type-safe infinite scrolling (pagination) implementation using Shopify's `@shopify/flash-list`.
 
-## Step 1: Start Metro
+## Key Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- **FlashList Integration**: Leverages `@shopify/flash-list` for superior performance and memory management over standard `FlatList`.
+- **Generic Implementation**: Fully type-safe components and hooks that work with any data type.
+- **Compound Component Pattern**: Easily customize loading indicators and empty states using a clean, declarative API.
+- **Custom Hook**: Centralized logic for managing pagination state (loading, error, hasMore, page tracking).
+- **Type Safety**: No `any` or `unknown` types; strictly typed generics for better developer experience.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Project Structure
 
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```text
+src/
+├── components/
+│   ├── InfiniteScrollFlashList.tsx   # Main component (Compound Pattern)
+│   ├── withInfiniteScroll.tsx        # Generic logic wrapper
+│   └── InfiniteScrollFlashList.styles.ts
+├── hooks/
+│   └── useInfiniteScroll.ts           # Logic for pagination state
+├── screens/
+│   ├── ListScreen.tsx                # Example usage screen
+│   └── ListScreen.styles.ts
+└── types/
+    └── infinite-scroll.types.ts       # Shared TypeScript definitions
 ```
 
-## Step 2: Build and run your app
+## How It Works
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 1. Data Layer (`useInfiniteScroll`)
+The `useInfiniteScroll` hook manages the pagination lifecycle. It takes a `fetchPage` function and returns the current `data`, loading states, and a `loadMore` callback.
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```typescript
+const { data, isLoading, isLoadingMore, hasMore, loadMore } = useInfiniteScroll({
+  fetchPage: async (page) => {
+    const response = await api.get(`/items?page=${page}`);
+    return {
+      items: response.data.items,
+      hasMore: response.data.currentPage < response.data.totalPages,
+    };
+  },
+});
 ```
 
-### iOS
+### 2. UI Layer (`InfiniteScrollFlashList`)
+The UI component wraps `FlashList` and injects pagination logic via an internal `InfiniteScrollWrapper`.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```tsx
+<InfiniteScrollFlashList<Item>
+  data={data}
+  renderItem={renderItem}
+  onLoadMore={loadMore}
+  isLoadingMore={isLoadingMore}
+  hasMore={hasMore}
+/>
 ```
 
-Then, and every time you update your native dependencies, run:
+### 3. Customization (Compound Component Pattern)
+You can provide custom UI for the loading indicator (footer) and empty states using attached sub-components.
 
-```sh
-bundle exec pod install
+```tsx
+<InfiniteScrollFlashList.LoadingIndicator>
+  <MyCustomSpinner />
+</InfiniteScrollFlashList.LoadingIndicator>
+
+<InfiniteScrollFlashList.EmptyState>
+  <View><Text>No data available</Text></View>
+</InfiniteScrollFlashList.EmptyState>
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Implementation Details
 
-```sh
-# Using npm
-npm run ios
+### Performance
+- **FlashList**: Uses cell recycling to handle thousands of items with minimal memory footprint.
+- **Callback Memoization**: All scroll handlers and render functions are memoized with `useCallback` to prevent unnecessary re-renders.
+- **Off-thread Work**: Designed to keep the JS thread free for smooth scrolling at 60 FPS.
 
-# OR using Yarn
-yarn ios
-```
+### Type Safety
+The implementation uses TypeScript generics (`<T>`) throughout the entire stack, from the fetch function to the `renderItem` prop, ensuring that your data types are correctly inferred and validated at every step.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Getting Started
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. Install dependencies:
+   ```bash
+   npm install @shopify/flash-list react-native-safe-area-context
+   ```
+2. Define your data type and fetch function.
+3. Use the `useInfiniteScroll` hook in your screen.
+4. Render the `InfiniteScrollFlashList`.

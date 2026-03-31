@@ -17,8 +17,10 @@ A curated collection of independent React Native projects, architectural pattern
 
 ## Safety & Research Protocol
 
+- **Library Documentation:** **Mandatory Doc Review.** ALWAYS use `context7` or web search before using any library to deeply understand its usage, implementation details, and dependencies. Never rely on training data for library APIs or architectural patterns.
 - **Research:** **Mandatory Research First.** Always perform a web search to find the latest information, library updates (e.g., React 19, RN 0.76+), and best practices before implementing new features or fixing complex bugs.
 - **Latest Tech Mandate:** Always prioritize and use the latest features from React (e.g., Actions, `use` hook, React Compiler) and React Native (e.g., Bridgeless Mode, New Architecture enabled by default) by verifying current documentation via search.
+- **Package Versions:** ALWAYS perform a web search to find the latest stable versions of libraries before adding or updating them in `package.json`. **Never guess package versions or rely on outdated training data.**
 - **Anti-Hallucination:** **Never guess.** If documentation is unclear or a solution is ambiguous, **ask the user for clarification**. Do not hallucinate API signatures or library capabilities.
 - **Verification:** Empirically reproduce issues before applying fixes and verify implementations against current official documentation.
 
@@ -82,7 +84,7 @@ The following core Ubuntu packages are pre-installed in this environment. Use th
 
 - **FlashList Mandate:** Always use `@shopify/flash-list`. **Do not use FlatList.**
 - Set `keyExtractor` explicitly.
-- Optimize with `getItemLayout` (or `estimatedItemSize` for FlashList) for performance.
+- For FlashList v2, do not use `estimatedItemSize` as sizing is handled automatically.
 - Avoid inline `renderItem` arrow functions — define outside component.
 
 ### Animations & Gestures
@@ -109,16 +111,17 @@ The following core Ubuntu packages are pre-installed in this environment. Use th
 
 ## Project Index (Core References)
 
-| Folder            | Concept / Purpose                  |
-| ----------------- | ---------------------------------- |
-| `AbsoluteImports` | Path aliasing with `@app/*`        |
-| `analytics`       | Turbo Module (New Architecture)    |
-| `mmkv`            | JSI Key-Value Storage              |
-| `mvvm_example`    | MVVM Architecture (Reference Only) |
-| `ReduxSaga`       | Redux + Saga Management            |
-| `TurboDemo`       | TurboModules & Codegen Demo        |
-| `NativeWindDLS`   | Tailwind CSS via NativeWind        |
-| `widgetApp`       | Home screen widget implementation  |
+| Folder                    | Concept / Purpose                  |
+| ------------------------- | ---------------------------------- |
+| `AbsoluteImports`         | Path aliasing with `@app/*`        |
+| `analytics`               | Turbo Module (New Architecture)    |
+| `InfiniteScrollFlashList` | Generic Infinite Scroll Pagination |
+| `mmkv`                    | JSI Key-Value Storage              |
+| `mvvm_example`            | MVVM Architecture (Reference Only) |
+| `ReduxSaga`               | Redux + Saga Management            |
+| `TurboDemo`               | TurboModules & Codegen Demo        |
+| `NativeWindDLS`           | Tailwind CSS via NativeWind        |
+| `widgetApp`               | Home screen widget implementation  |
 
 ---
 
