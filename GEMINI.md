@@ -11,6 +11,9 @@ A curated collection of independent React Native projects, architectural pattern
   - For Android native modules, ALWAYS include support for 16KB page alignment to ensure compatibility with Android 15+ devices.
 - **Performance First:** Use `reanimated`, `gesture-handler`, and `FlashList` for high-performance UI. **Do not use the standard React Native Animated API or gesture systems.**
 - **Modular Structure:** Maintain a modular file and folder structure. Avoid placing all logic in a single file; follow industry-standard project organization (e.g., separating components, hooks, services, and styles).
+- **Comprehensive Documentation:**
+  - **Code Comments:** ALWAYS include descriptive comments in your code to explain complex logic, architectural decisions, and library-specific implementations for better maintainability and understanding.
+  - **Project READMEs:** ALWAYS update or create project-level `README.md` files with comprehensive details about the project's purpose, libraries used (with versions), architecture, and usage examples. Documentation must be kept in sync with code changes.
 - **Contextual Research:**
   - Always reference the root `README.md` for conceptual grounding (TTI, Threading, Hermes) before suggesting architectural changes.
   - Read module-specific `README.md` files before modifying any sub-project.
