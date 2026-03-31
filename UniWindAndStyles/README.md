@@ -2,9 +2,17 @@
 
 This project is a production-ready reference for the **Uni-stack**—the most advanced and performant styling solution for React Native. It combines **Unistyles v3** and **Uniwind (Tailwind v4)**, both built on a high-performance **C++ engine** optimized for the **New Architecture (Fabric)**.
 
+## 📱 Previews
+
+<p align="center">
+  <img src="preview/01.png" width="45%" />
+  <img src="preview/02.png" width="45%" />
+</p>
+
 ---
 
 ## 🚀 The Uni-stack Philosophy
+... rest of the file ...
 
 The Uni-stack moves styling logic out of the JavaScript thread and into the **C++ layer**. This ensures that complex operations like theme switching, breakpoint calculations, and media queries happen at native speeds, providing **Zero Re-renders** and **Near-native performance**.
 
@@ -15,7 +23,7 @@ Unistyles v3 is a "StyleSheet on steroids." It replaces the standard `StyleSheet
 - **StyleSheet.configure:** Centralized configuration for themes and breakpoints.
 - **StyleSheet.create:** Supports dynamic functions, breakpoints, and variants.
 - **useUnistyles Hook:** Subscribes components to theme and runtime changes.
-- **UnistylesRuntime:** A global object for programmatic control (e.g., `UnistylesRuntime.setTheme('dark')`).
+- **UnistylesRuntime:** A global object for programmatic control (e.g., `UnistylesRuntime.setTheme('dark')`). *Note: In v3, you must disable `adaptiveThemes` before manually setting a theme.*
 
 ### 2. Uniwind (Tailwind v4)
 Uniwind brings **Tailwind CSS v4** to React Native. It uses the same C++ engine as Unistyles, making it significantly faster than other Tailwind-in-JS libraries.

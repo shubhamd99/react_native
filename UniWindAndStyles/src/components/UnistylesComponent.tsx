@@ -25,7 +25,12 @@ export const UnistylesComponent: React.FC = () => {
         </Text>
       </View>
 
-      <Pressable style={styles.button}>
+      <Pressable 
+        style={({ pressed }) => [
+          styles.button,
+          { opacity: pressed ? 0.7 : 1 }
+        ]}
+      >
         <Text style={styles.buttonText}>Click me (I use variants!)</Text>
       </Pressable>
     </View>
