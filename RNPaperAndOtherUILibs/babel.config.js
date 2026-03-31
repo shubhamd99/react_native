@@ -1,3 +1,18 @@
 module.exports = {
-  presets: ['module:@react-native/babel-preset'],
+  presets: [
+    'module:@react-native/babel-preset',
+    'nativewind/babel',
+  ],
+  plugins: [
+    [
+      '@tamagui/babel-plugin',
+      {
+        components: ['tamagui'],
+        config: './tamagui.config.ts',
+        logTimings: true,
+        disableExtraction: process.env.NODE_ENV === 'development',
+      },
+    ],
+    'react-native-worklets/plugin',
+  ],
 };

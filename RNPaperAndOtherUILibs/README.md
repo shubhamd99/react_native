@@ -1,97 +1,54 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native UI Libraries Showcase
 
-# Getting Started
+A comprehensive guide and demonstration of the three major UI library approaches in React Native as of 2026. This project integrates Material Design, Compiler-first UI, and utility-first (Tailwind) approaches.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Library to Package Mapping
 
-## Step 1: Start Metro
+### 1. React Native Paper (Material Design)
+**Components:** See `src/paper/PaperUsage.tsx`
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+![React Native Paper Showcase](./preview/01.png)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- `react-native-paper`: Core library components.
+- `react-native-vector-icons`: Required for Material icons.
 
-```sh
-# Using npm
-npm start
+### 2. Tamagui (Compiler-First UI)
+**Components:** See `src/tamagui/TamaguiUsage.tsx`
 
-# OR using Yarn
-yarn start
-```
+![Tamagui Showcase](./preview/02.png)
 
-## Step 2: Build and run your app
+- `tamagui`: Core UI kit and styling engine (using **stable 1.144.4**).
+- `@tamagui/config`: Configuration presets (using stable **v3** presets).
+- `@tamagui/lucide-icons`: Lucide icon set optimized for Tamagui.
+- `react-native-svg`: Required peer dependency for SVG icons.
+- `@tamagui/babel-plugin`: (Dev) Optimizing compiler for zero-runtime styles.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 3. Gluestack v2 (shadcn-like / NativeWind)
+**Components:** See `src/gluestack/GluestackUsage.tsx` and `src/components/ui/`
 
-### Android
+![Gluestack v2 Showcase](./preview/03.png)
 
-```sh
-# Using npm
-npm run android
+- `nativewind`: Tailwind CSS for React Native.
+- `tailwindcss`: Core Tailwind engine (using **v3** for NativeWind v4 compatibility).
+- `@gluestack-ui/nativewind`: High-level components and logic.
 
-# OR using Yarn
-yarn android
-```
+### 4. Supporting Infrastructure
+- `react-native-tab-view`: Main navigation between the libraries.
+- `react-native-pager-view`: Required for high-performance tab transitions.
+- `react-native-reanimated`: Core animation engine (using **v4** features).
+- `react-native-worklets-core`: Required for Reanimated worklets.
+- `react-native-gesture-handler`: Native gesture handling.
 
-### iOS
+## Setup & Configuration
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### Configuration Files
+- `babel.config.js`: Integrated Tamagui, NativeWind, and Reanimated plugins.
+- `tamagui.config.ts`: Core Tamagui tokens and themes using stable presets.
+- `tailwind.config.js`: NativeWind content scanning paths and `nativewind/preset`.
+- `metro.config.js`: NativeWind Metro transformer setup.
+- `global.css`: Tailwind directives.
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Learning Path
+1. **Material Design:** Start with `RN Paper` if you want a quick, standard look.
+2. **Performance & Cross-Platform:** Use `Tamagui` for large-scale, performance-critical apps.
+3. **Modern Web-Like Workflow:** Use `Gluestack v2` with NativeWind if you prefer Tailwind CSS and full control over component code.
