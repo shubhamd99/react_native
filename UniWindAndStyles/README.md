@@ -1,97 +1,140 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Uni-stack: High-Performance React Native Styling (v3)
 
-# Getting Started
+This project is a production-ready reference for the **Uni-stack**—the most advanced and performant styling solution for React Native. It combines **Unistyles v3** and **Uniwind (Tailwind v4)**, both built on a high-performance **C++ engine** optimized for the **New Architecture (Fabric)**.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 🚀 The Uni-stack Philosophy
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+The Uni-stack moves styling logic out of the JavaScript thread and into the **C++ layer**. This ensures that complex operations like theme switching, breakpoint calculations, and media queries happen at native speeds, providing **Zero Re-renders** and **Near-native performance**.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### 1. Unistyles v3 (The Foundation)
+Unistyles v3 is a "StyleSheet on steroids." It replaces the standard `StyleSheet` with a powerful, type-safe engine.
 
-```sh
-# Using npm
-npm start
+- **C++ Engine:** Style calculations are offloaded to C++ via JSI/Nitro Modules.
+- **StyleSheet.configure:** Centralized configuration for themes and breakpoints.
+- **StyleSheet.create:** Supports dynamic functions, breakpoints, and variants.
+- **useUnistyles Hook:** Subscribes components to theme and runtime changes.
+- **UnistylesRuntime:** A global object for programmatic control (e.g., `UnistylesRuntime.setTheme('dark')`).
 
-# OR using Yarn
-yarn start
+### 2. Uniwind (Tailwind v4)
+Uniwind brings **Tailwind CSS v4** to React Native. It uses the same C++ engine as Unistyles, making it significantly faster than other Tailwind-in-JS libraries.
+
+- **Tailwind v4 Power:** Supports modern Tailwind features and the new CSS-first configuration.
+- **Utility-First:** Rapid UI development using standard `className` strings.
+- **Optimized Parser:** Built-in C++ parser handles class resolution with minimal overhead.
+
+---
+
+## 📱 Understanding Breakpoints
+
+Breakpoints allow your UI to respond to different screen sizes. In the Uni-stack, breakpoints are calculated **natively** in C++.
+
+### Default Breakpoints in this Project
+We use a standard set of breakpoints defined in `src/unistyles.ts`:
+
+| Key | Value (px) | Device Target |
+| :--- | :--- | :--- |
+| `xs` | 0 | Small Phones |
+| `sm` | 576 | Large Phones |
+| `md` | 768 | Tablets (Portrait) |
+| `lg` | 992 | Tablets (Landscape) |
+| `xl` | 1200 | Large Tablets / Desktop |
+| `superLarge` | 2000 | Ultra-wide Screens |
+
+### Usage in Unistyles
+You can define responsive values directly in your styles:
+```tsx
+const styles = StyleSheet.create((theme) => ({
+  container: {
+    width: {
+      xs: '100%',
+      md: '50%', // Automatically switches at 768px
+    },
+    padding: theme.spacing.md,
+  },
+}));
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+### Usage in Uniwind
+Use Tailwind's responsive prefixes:
+```tsx
+<View className="w-full md:w-1/2 p-4" />
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 🎨 Variants & Compound Styles
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Unistyles v3 introduces a powerful **Variants** system, allowing you to create complex, reusable components with multiple states.
 
-```sh
-bundle install
+### Defining Variants
+```tsx
+const styles = StyleSheet.create((theme) => ({
+  button: {
+    borderRadius: 8,
+    variants: {
+      color: {
+        primary: { backgroundColor: theme.colors.primary },
+        secondary: { backgroundColor: theme.colors.secondary },
+      },
+      size: {
+        small: { padding: 4 },
+        medium: { padding: 10 },
+      },
+    },
+  },
+}));
 ```
 
-Then, and every time you update your native dependencies, run:
+### Applying Variants
+Variants are applied inside your component using the `useVariants` method:
+```tsx
+export const MyButton = () => {
+  styles.useVariants({
+    color: 'primary',
+    size: 'medium',
+  });
 
-```sh
-bundle exec pod install
+  return <Pressable style={styles.button} />;
+};
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## 🛠️ Project Architecture
 
-# OR using Yarn
-yarn ios
-```
+### `src/unistyles.ts`
+The heartbeat of the project. It uses `StyleSheet.configure` to register themes and breakpoints and extends the Global TypeScript interfaces for full autocompletion.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### `src/theme.ts`
+Contains the `lightTheme` and `darkTheme` definitions. All colors, spacing, and typography constants are defined here.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### `App.styles.ts`
+Following the **Modular Pattern**, all styles for `App.tsx` are extracted here to keep the component logic clean and adhere to ESLint "no-inline-styles" rules.
 
-## Step 3: Modify your app
+### `src/components/`
+- **`UnistylesComponent.tsx`**: Demonstrates advanced Unistyles features like variants, breakpoints, and dynamic theme access.
+- **`UniwindComponent.tsx`**: Showcases Tailwind v4 utility classes, responsive prefixes, and interaction states (`active:`, `group-active:`).
 
-Now that you have successfully run the app, let's make changes!
+---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## 🆚 Comparison: Why the Uni-stack?
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+| Feature | Standard StyleSheet | NativeWind (v4) | Uni-stack (v3) |
+| :--- | :--- | :--- | :--- |
+| **Speed** | Fast | Moderate | **Ultra Fast (C++)** |
+| **Themes** | Manual Context | Good | **Native/Automatic** |
+| **Breakpoints** | Manual Logic | Class-based | **Integrated (C++)** |
+| **Type Safety** | Basic | Limited | **Full (Strict TS)** |
+| **Fabric Ready** | Yes | Yes | **Optimized for Fabric** |
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
+## 📖 Best Practices Used Here
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1.  **Strict Typing**: No `any` types. Everything is derived from the theme and breakpoint definitions.
+2.  **Separate Style Files**: No inline styles in components. This improves readability and maintainability.
+3.  **Adaptive Themes**: Enabled by default. Switching system theme automatically updates the UI without JS re-renders.
+4.  **Compound Component Pattern**: Used for clean, reusable UI elements.
+5.  **Safe Areas**: Always handled via `react-native-safe-area-context`.
