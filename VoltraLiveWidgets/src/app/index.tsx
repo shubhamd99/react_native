@@ -1,98 +1,186 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
+import { Stack } from 'expo-router';
+import { OrderTrackingActivity } from '../live-activities/OrderTrackingActivity';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
 export default function HomeScreen() {
+  const [isActivityActive, setIsActivityActive] = useState(false);
+
+  const toggleActivity = () => {
+    setIsActivityActive(prev => !prev);
+  };
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.container}>
+      <Stack.Options title="Voltra Demo" />
+      
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Voltra Live Widgets</Text>
+          <Text style={styles.subtitle}>
+            Build native Live Activities and Home Screen Widgets in React.
+          </Text>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Live Activity Demo</Text>
+            <View style={[styles.statusDot, isActivityActive ? styles.dotActive : styles.dotInactive]} />
+          </View>
+          
+          <Text style={styles.description}>
+            Interactive Lock Screen and Dynamic Island tracking for iOS. On Android, this can manifest as a persistent notification or widget update.
+          </Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <TouchableOpacity 
+            style={[styles.button, isActivityActive ? styles.buttonActive : styles.buttonInactive]} 
+            onPress={toggleActivity}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.buttonText}>
+              {isActivityActive ? 'Stop Live Activity' : 'Start Order Tracking'}
+            </Text>
+          </TouchableOpacity>
+          
+          {isActivityActive && (
+            <OrderTrackingActivity 
+              orderId="8821" 
+              status="On the way" 
+              eta="12 mins" 
+            />
+          )}
+        </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Home Screen Widgets</Text>
+          <Text style={styles.description}>
+            Modular widget registration. In this demo, a Weather Widget is registered at the top level.
+          </Text>
+          <View style={styles.infoBox}>
+            <Text style={styles.infoText}>
+              💡 Note: Widgets must be added from your device's widget gallery after running a development build.
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Push Updates</Text>
+          <Text style={styles.description}>
+            Live Activities can be updated remotely via APNs/FCM tokens provided by Voltra.
+          </Text>
+          <View style={styles.codeBlock}>
+            <Text style={styles.codeText}>const {'{ pushToken }'} = useLiveActivity(...);</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#F9FAFB',
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  content: {
+    padding: 24,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  header: {
+    marginBottom: 32,
   },
   title: {
-    textAlign: 'center',
+    fontSize: 34,
+    fontWeight: '900',
+    color: '#111827',
+    letterSpacing: -0.5,
   },
-  code: {
-    textTransform: 'uppercase',
+  subtitle: {
+    fontSize: 17,
+    color: '#6B7280',
+    marginTop: 8,
+    lineHeight: 24,
+    fontWeight: '400',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  section: {
+    marginBottom: 24,
+    backgroundColor: 'white',
+    padding: 24,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 8,
+  },
+  dotActive: {
+    backgroundColor: '#10B981',
+  },
+  dotInactive: {
+    backgroundColor: '#D1D5DB',
+  },
+  description: {
+    fontSize: 15,
+    color: '#4B5563',
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  button: {
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonInactive: {
+    backgroundColor: '#3B82F6',
+  },
+  buttonActive: {
+    backgroundColor: '#EF4444',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+  infoBox: {
+    backgroundColor: '#EFF6FF',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 8,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#1E40AF',
+    lineHeight: 20,
+    fontWeight: '500',
+  },
+  codeBlock: {
+    backgroundColor: '#F3F4F6',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 4,
+  },
+  codeText: {
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    fontSize: 13,
+    color: '#374151',
   },
 });

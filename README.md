@@ -80,6 +80,29 @@ npx expo install expo-dev-client
 npx expo prebuild --clean
 ```
 
+#### Platform-specific prebuild (Ubuntu / Linux)
+
+On Ubuntu you cannot build iOS — Xcode only runs on macOS. Generating the `ios/` folder is pointless on Linux, so use the `--platform` flag to generate only the `android/` folder:
+
+```bash
+# Generates only android/ — skips ios/ entirely
+npx expo prebuild --clean --platform android
+```
+
+Without the flag, prebuild generates **both** `android/` and `ios/`. Use `--platform android` to keep things clean and faster on Linux machines.
+
+**Skipping explicit prebuild entirely:**
+
+If `android/` does not exist yet, running `npx expo run:android` will automatically trigger prebuild for you — so it is effectively one command instead of two. Only run explicit prebuild when you need `--clean` (after adding a new native module, config plugin, or when the folder is stale/corrupted).
+
+```bash
+# android/ missing → auto-prebuilds then builds and runs
+npx expo run:android
+
+# android/ exists and up to date → skips prebuild, builds and runs directly
+npx expo run:android
+```
+
 ### Step 4 — Build and run your custom dev client
 
 ```bash

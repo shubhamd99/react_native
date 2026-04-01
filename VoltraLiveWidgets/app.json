@@ -27,6 +27,23 @@
     "plugins": [
       "expo-router",
       [
+        "voltra",
+        {
+          "widgets": [
+            {
+              "name": "weather-widget",
+              "src": "./src/widgets/WeatherWidget.tsx",
+              "android": {
+                "minWidth": "100dp",
+                "minHeight": "100dp",
+                "updatePeriodMillis": 1800000,
+                "description": "Local Weather Widget"
+              }
+            }
+          ]
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "backgroundColor": "#208AEF",
