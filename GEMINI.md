@@ -36,6 +36,63 @@ A curated collection of independent React Native projects, architectural pattern
 - **Styling:** Vanilla CSS, NativeWind (in `NativeWindDLS`).
 - **Animation & Gestures:** **Mandatory** use of `react-native-reanimated` and `react-native-gesture-handler`.
 
+## Expo Project Workflow
+
+To create and build a new Expo project with a custom dev client (SDK 55+), follow these steps:
+
+### Step 1 — Create the project
+
+```bash
+npx create-expo-app@latest MyApp --template default@sdk-55
+cd MyApp
+```
+
+### Step 2 — Install expo-dev-client
+
+```bash
+npx expo install expo-dev-client
+```
+
+### Step 3 — Prebuild (generates android/ and ios/ native folders)
+
+```bash
+npx expo prebuild --clean
+```
+
+### Step 4 — Build and run your custom dev client
+
+```bash
+# Android
+npx expo run:android
+ELECTRON_DISABLE_SANDBOX=1 npx expo run:android; ## For ubuntu
+
+# iOS
+npx expo run:ios
+```
+
+This compiles your own binary and installs it on the device or emulator. After this you never need Expo Go.
+
+### Step 5 — For subsequent development (JS only changes)
+
+```bash
+npx expo start
+```
+
+Your custom dev client is already installed. This just starts the Metro bundler and serves JS. Fast refresh works exactly like before.
+
+### Installing packages in Expo projects
+
+Always use `npx expo install` instead of `npm install` / `yarn add` for packages with Expo-managed native dependencies:
+
+```bash
+npx expo install expo-camera
+npx expo install expo-location react-native-maps
+```
+
+`npx expo install` resolves the exact version compatible with your current SDK — e.g. for SDK 55 it pins `expo-camera@55.x.x`. Using `npm install` without a version can pull in a build targeting a different SDK and cause subtle, hard-to-debug breakage.
+
+Use `npm install` / `yarn add` only for pure-JS packages that have no Expo SDK coupling (e.g. `lodash`, `zod`, `date-fns`).
+
 ## Environment & Pre-installed Tools
 
 The following core Ubuntu packages are pre-installed in this environment. Use these CLI tools whenever possible for faster and more efficient operations:
