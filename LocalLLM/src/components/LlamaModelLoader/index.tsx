@@ -1,21 +1,45 @@
 /**
- * LlamaModelLoader — status bar + download trigger for @react-native-ai/llama screens.
- * Automatically calls loadModel() on first render.
+ * @file LlamaModelLoader component.
+ * Manages the loading lifecycle for GGUF models used by the @react-native-ai/llama library.
+ * Automatically triggers model loading on mount and displays granular progress.
  */
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useLlamaContext } from '../context/LlamaContext';
 
+// React
+import React, { useEffect } from 'react';
+
+// React Native
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+
+// Context
+import { useLlamaContext } from '../../context/LlamaContext';
+
+// Styles
+import { styles } from './LlamaModelLoader.styles';
+
+/**
+ * Props for the LlamaModelLoader component.
+ */
 interface LlamaModelLoaderProps {
   /** If true, renders a compact inline badge instead of the full loading UI */
   compact?: boolean;
 }
 
+/**
+ * LlamaModelLoader component.
+ * Provides status feedback for model downloading and memory preparation.
+ * 
+ * @param {LlamaModelLoaderProps} props - Component props.
+ * @returns {React.FC} The rendered LlamaModelLoader component.
+ */
 const LlamaModelLoader: React.FC<LlamaModelLoaderProps> = ({ compact = false }) => {
   const { isReady, isDownloading, downloadProgress, isPreparing, error, loadModel, modelId } =
     useLlamaContext();
 
-  // Trigger load automatically when this component mounts
+  /**
+   * Model Lifecycle: Automatic Trigger
+   * Attempts to load the model immediately when the component is mounted,
+   * provided it isn't already loading or in an error state.
+   */
   useEffect(() => {
     if (!isReady && !isDownloading && !isPreparing && !error) {
       loadModel();
@@ -79,101 +103,5 @@ const LlamaModelLoader: React.FC<LlamaModelLoaderProps> = ({ compact = false }) 
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  readyBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF7ED',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
-    gap: 6,
-  },
-  readyBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF7ED',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    alignSelf: 'flex-start',
-    gap: 5,
-  },
-  readyDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: '#F97316',
-  },
-  readyText: {
-    fontSize: 12,
-    color: '#C2410C',
-    fontWeight: '600',
-  },
-  errorBanner: {
-    backgroundColor: '#FEF2F2',
-    borderRadius: 10,
-    padding: 12,
-    marginHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 10,
-  },
-  errorText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#991B1B',
-  },
-  retryBtn: {
-    backgroundColor: '#EF4444',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: '#FFF',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  loadingCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    padding: 14,
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#FED7AA',
-    margin: 16,
-  },
-  loadingText: {
-    flex: 1,
-    gap: 6,
-  },
-  loadingTitle: {
-    fontSize: 14,
-    color: '#1A1A1A',
-    fontWeight: '600',
-  },
-  loadingSubtitle: {
-    fontSize: 12,
-    color: '#888',
-  },
-  progressBar: {
-    height: 5,
-    backgroundColor: '#FEE2E2',
-    borderRadius: 3,
-    overflow: 'hidden',
-    marginTop: 4,
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#F97316',
-    borderRadius: 3,
-  },
-});
 
 export default LlamaModelLoader;

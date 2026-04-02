@@ -1,76 +1,96 @@
+/**
+ * @file Root App component that sets up the navigation structure and providers.
+ * This file configures the main navigation stack for the application, including
+ * both ExecuTorch and llama.rn based LLM implementations.
+ */
+
+// React
 import React from 'react';
+
+// React Native
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+// Navigation
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// LLM Libraries
 import { initExecutorch } from 'react-native-executorch';
 import { BareResourceFetcher } from 'react-native-executorch-bare-resource-fetcher';
 
-// ── react-native-executorch screens ─────────────────────────────────────────
-import HomeScreen from './src/screens/HomeScreen';
-import ChatScreen from './src/screens/ChatScreen';
-import SummarizeScreen from './src/screens/SummarizeScreen';
-import TranslateScreen from './src/screens/TranslateScreen';
-import CodeExplainerScreen from './src/screens/CodeExplainerScreen';
-import PlaygroundScreen from './src/screens/PlaygroundScreen';
-
-// ── @react-native-ai/llama (Callstack) screens ───────────────────────────────
-import LlamaChatScreen from './src/screens/LlamaChatScreen';
-import LlamaGenerateScreen from './src/screens/LlamaGenerateScreen';
+// Context
 import { LlamaProvider } from './src/context/LlamaContext';
 
-// ── Initialise ExecuTorch once at app startup ────────────────────────────────
-// BareResourceFetcher handles model downloads/cache for bare React Native.
-// Expo projects should use ExpoResourceFetcher from
-// react-native-executorch-expo-resource-fetcher instead.
+// Screens
+import HomeScreen from './src/screens/Home';
+import ChatScreen from './src/screens/Chat';
+import SummarizeScreen from './src/screens/Summarize';
+import TranslateScreen from './src/screens/Translate';
+import CodeExplainerScreen from './src/screens/CodeExplainer';
+import PlaygroundScreen from './src/screens/Playground';
+import LlamaChatScreen from './src/screens/LlamaChat';
+import LlamaGenerateScreen from './src/screens/LlamaGenerate';
+
+/**
+ * Initialize ExecuTorch with the bare resource fetcher.
+ * This is necessary for loading model files from the local filesystem or assets.
+ */
 initExecutorch({ resourceFetcher: BareResourceFetcher });
 
+/**
+ * Type definition for the root navigation stack parameters.
+ */
 export type RootStackParamList = {
   Home: undefined;
-  // ExecuTorch screens
   Chat: undefined;
   Summarize: undefined;
   Translate: undefined;
   Code: undefined;
   Playground: undefined;
-  // Callstack @react-native-ai/llama screens
   LlamaChat: undefined;
   LlamaGenerate: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const screenOptions: NativeStackNavigationOptions = {
-  headerStyle: { backgroundColor: '#6C63FF' },
-  headerTintColor: '#FFF',
-  headerTitleStyle: { fontWeight: '700' },
-  headerBackTitle: 'Back',
-};
-
+/**
+ * The main App component.
+ * Sets up SafeAreaProvider, LlamaProvider (for llama.rn), and the NavigationContainer.
+ * 
+ * @returns {React.JSX.Element} The rendered application.
+ */
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaProvider>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor="#6C63FF"
-      />
-      {/* LlamaProvider wraps the whole app so all Callstack screens share
-          one downloaded/prepared model instance without re-loading. */}
       <LlamaProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent
+          />
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#FFF',
+              },
+              headerShadowVisible: false,
+              headerTitleStyle: {
+                fontWeight: '700',
+              },
+            }}
+          >
             <Stack.Screen
               name="Home"
               component={HomeScreen}
               options={{ title: 'LocalLLM' }}
             />
 
-            {/* ── react-native-executorch ── */}
+            {/* ── react-native-executorch (Meta) ── */}
             <Stack.Screen
               name="Chat"
               component={ChatScreen}

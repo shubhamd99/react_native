@@ -1,13 +1,39 @@
-import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+/**
+ * @file ModelLoader component.
+ * Displays the status of an ExecuTorch model, including download progress,
+ * loading state, and any errors encountered during initialization.
+ */
 
+// React
+import React from 'react';
+
+// React Native
+import { View, Text, ActivityIndicator } from 'react-native';
+
+// Styles
+import { styles } from './ModelLoader.styles';
+
+/**
+ * Props for the ModelLoader component.
+ */
 interface ModelLoaderProps {
+  /** Current download progress from 0 to 1 */
   downloadProgress: number;
+  /** Whether the model is fully loaded and ready for inference */
   isReady: boolean;
+  /** Error message if model loading failed */
   error: string | null;
+  /** Optional display name for the model */
   modelName?: string;
 }
 
+/**
+ * ModelLoader component.
+ * Renders a status badge or a detailed loading view with a progress bar.
+ * 
+ * @param {ModelLoaderProps} props - Component props.
+ * @returns {React.FC} The rendered ModelLoader component.
+ */
 const ModelLoader: React.FC<ModelLoaderProps> = ({
   downloadProgress,
   isReady,
@@ -53,60 +79,5 @@ const ModelLoader: React.FC<ModelLoaderProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  readyBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E8F5E9',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
-  },
-  readyDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#4CAF50',
-    marginRight: 6,
-  },
-  readyText: {
-    fontSize: 13,
-    color: '#2E7D32',
-    fontWeight: '500',
-  },
-  errorBanner: {
-    backgroundColor: '#FFEBEE',
-    padding: 12,
-    borderRadius: 8,
-    marginHorizontal: 16,
-  },
-  errorText: {
-    color: '#C62828',
-    fontSize: 13,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    paddingVertical: 16,
-    gap: 8,
-  },
-  loadingText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  progressBar: {
-    width: '80%',
-    height: 6,
-    backgroundColor: '#E0E0E0',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#6C63FF',
-    borderRadius: 3,
-  },
-});
 
 export default ModelLoader;
